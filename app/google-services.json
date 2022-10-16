@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "944187323877",
-    "project_id": "myfinance-fc268",
-    "storage_bucket": "myfinance-fc268.appspot.com"
+    "project_number": "1026559369986",
+    "project_id": "myfinance-1a7f6",
+    "storage_bucket": "myfinance-1a7f6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:944187323877:android:8eac92d241333a693e6b0c",
+        "mobilesdk_app_id": "1:1026559369986:android:f85ca13fda2d2ddd05981b",
         "android_client_info": {
           "package_name": "com.example.myfinance"
         }
       },
       "oauth_client": [
         {
-          "client_id": "944187323877-3juq6tfod0g92f19shc24jjnn1907ir4.apps.googleusercontent.com",
+          "client_id": "1026559369986-8q3fn985uafivove9h3lkq4hl4ni5l92.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBLELFZtFINlC2MW3KqW6kcafzEsA4apKg"
+          "current_key": "AIzaSyBI3aTnywyPU56K5V1Ak4uwrtbYbNn32SA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "944187323877-3juq6tfod0g92f19shc24jjnn1907ir4.apps.googleusercontent.com",
+              "client_id": "1026559369986-8q3fn985uafivove9h3lkq4hl4ni5l92.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

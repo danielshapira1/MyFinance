@@ -2,12 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding= "20dp"
-    tools:context=".LoginActivity">
-
+    android:padding="20dp"
+    tools:context=".SignupActivity">
 
     <TextView
         android:id="@+id/idHeader"
@@ -15,13 +13,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:gravity="center_horizontal"
-        android:padding="5dp"
-        android:text="My Finance"
+        android:text="signup"
         android:textAlignment="center"
         android:textColor="@color/purple_700"
         android:textSize="28sp"
-         />
-
+        />
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idHeader"
+        android:gravity="center_horizontal"
+        android:text="create new account"
+        android:textAlignment="center"
+        />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTextFiled"
         android:layout_width="match_parent"
@@ -35,8 +40,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
-            android:selectAllOnFocus="true"
-            />
+            android:selectAllOnFocus="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,36 +48,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
-
         android:layout_centerInParent="true">
-    <EditText
-        android:id="@+id/passwordText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_password"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true" />
-</com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            android:id="@+id/passwordText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/signupBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordTextFiled"
         android:layout_marginTop="20dp"
-        android:text="Login" />
+        android:text="signup" />
 
     <TextView
-        android:id="@+id/createNew"
+        android:id="@+id/goToLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_new_account_here_signup"
+        android:text="@string/already_have_account_login_here"
         android:layout_alignParentBottom="true"
         android:textAlignment="center"
         style="@style/TextAppearance.MaterialComponents.Caption">
     </TextView>
-
 
 
 </RelativeLayout>
