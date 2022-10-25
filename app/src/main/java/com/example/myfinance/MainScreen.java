@@ -43,7 +43,10 @@ public class MainScreen extends AppCompatActivity {
     ArrayList<Payment> list;
     String uid;
     String date;
-
+    int totalHome = 0;
+    int totalShop = 0;
+    int totalFood = 0;
+    int totalOther = 0;
 
 
     @Override
@@ -56,20 +59,19 @@ public class MainScreen extends AppCompatActivity {
         uid = auth.getCurrentUser().getUid().toString();
         Button moveToPaymentScreen = (Button) findViewById(R.id.createNewPayment);
         Button moveToCalenderScreen = (Button) findViewById(R.id.calender);
-        Button test = (Button) findViewById(R.id.button2);
         Date cDate = new Date();
         String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
 
         date = fDate;
-        Log.d(TAG, "onCreate: "+ date);
+        Log.d(TAG, "onCreate: " + date);
         getUpdatedDate();
-        Log.d(TAG, "onUpdate: "+ date);
+        Log.d(TAG, "onUpdate: " + date);
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
-        myAdapter = new MyAdapter(this,list);
+        myAdapter = new MyAdapter(this, list);
         recyclerView.setAdapter(myAdapter);
 
         getDataByDate(date);
@@ -100,25 +102,49 @@ public class MainScreen extends AppCompatActivity {
 
             }
         });
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainScreen.this, PaymentList.class);
-                startActivity(intent);
-            }
-        });
+
 
     }
 
     private void getDataByDate(String date) {
-        myRef.child(uid).orderByChild("date").equalTo(date).addValueEventListener(new ValueEventListener() {
+        myRef./*child(uid).orderByChild("date").equalTo(date).*/addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Payment payment = dataSnapshot.getValue(Payment.class);
                     list.add(payment);
-                }
+                    String curr = dataSnapshot.child("category").getValue().toString();
 
+                    if (curr.equals("food")) {
+
+                        String toNum = dataSnapshot.child("cost").getValue().toString();
+                        int parse = Integer.parseInt(toNum);
+                        totalFood += parse;
+                        Log.d(TAG, "total: " + totalFood);
+                    }
+
+                    if (curr.equals("home")) {
+
+                        String toNum = dataSnapshot.child("cost").getValue().toString();
+                        int parse = Integer.parseInt(toNum);
+                        totalHome += parse;
+                    }
+
+                    if (curr.equals("shopping")) {
+
+                        String toNum = dataSnapshot.child("cost").getValue().toString();
+                        int parse = Integer.parseInt(toNum);
+                        totalShop += parse;
+                    }
+
+                    if (curr.equals("other")) {
+
+                        String toNum = dataSnapshot.child("cost").getValue().toString();
+                        int parse = Integer.parseInt(toNum);
+                        totalOther += parse;
+                    }
+                }
+                Log.d(TAG, "onDataChange: "+ totalFood);
                 myAdapter.notifyDataSetChanged();
             }
 
@@ -127,50 +153,19 @@ public class MainScreen extends AppCompatActivity {
 
             }
         });
-
-//        myRef.child(uid).orderByChild("date").equalTo(date)
-//                .addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                Log.d(TAG, "onChildAdded: "+snapshot.getKey() +  snapshot.getValue());
-////                for (DataSnapshot findDate: snapshot.getChildren()
-////                     ) {
-////
-////                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
+        Log.d(TAG, "new: "+ totalFood);
         barArraylist = new ArrayList<>();
-        barArraylist.add(new BarEntry(1, 10));
-        barArraylist.add(new BarEntry(2, 20));
-        barArraylist.add(new BarEntry(3, 30));
-        barArraylist.add(new BarEntry(4, 40));
+        barArraylist.add(new BarEntry(1, totalFood));
+        barArraylist.add(new BarEntry(2, totalHome));
+        barArraylist.add(new BarEntry(3, totalShop));
+        barArraylist.add(new BarEntry(4, totalOther));
+
     }
 
-    public void getUpdatedDate(){
+    public void getUpdatedDate() {
         String newDate = CalendarActivity.getSelectedDate();
-        if (newDate != date && newDate!=null)
-            date= newDate;
+        if (newDate != date && newDate != null)
+            date = newDate;
     }
 
 }
