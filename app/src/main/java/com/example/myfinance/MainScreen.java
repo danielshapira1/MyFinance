@@ -36,8 +36,7 @@ public class MainScreen extends AppCompatActivity {
     ArrayList barArraylist;
     private RecyclerView recyclerView;
     MyAdapter myAdapter;
-    final static String TAG = "fuckyou";
-    ActivityMainScreenBinding binding;
+    final static String TAG = "My finance";
     DatabaseReference myRef;
     FirebaseAuth auth;
     ArrayList<Payment> list;
@@ -75,14 +74,6 @@ public class MainScreen extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
 
         getDataByDate(date);
-        BarChart barChart = findViewById(R.id.chart);
-        BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
-        BarData barData = new BarData(barDataSet);
-        barChart.setData(barData);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        barDataSet.setValueTextColor(Color.RED);
-        barChart.getDescription().setEnabled(true);
-
 
         moveToPaymentScreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +98,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void getDataByDate(String date) {
-        myRef./*child(uid).orderByChild("date").equalTo(date).*/addValueEventListener(new ValueEventListener() {
+        myRef.child(uid).orderByChild("date").equalTo(date).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -120,7 +111,6 @@ public class MainScreen extends AppCompatActivity {
                         String toNum = dataSnapshot.child("cost").getValue().toString();
                         int parse = Integer.parseInt(toNum);
                         totalFood += parse;
-                        Log.d(TAG, "total: " + totalFood);
                     }
 
                     if (curr.equals("home")) {
@@ -145,6 +135,18 @@ public class MainScreen extends AppCompatActivity {
                     }
                 }
                 Log.d(TAG, "onDataChange: "+ totalFood);
+                barArraylist = new ArrayList<>();
+                barArraylist.add(new BarEntry(1, totalFood));
+                barArraylist.add(new BarEntry(2, totalHome));
+                barArraylist.add(new BarEntry(3, totalShop));
+                barArraylist.add(new BarEntry(4, totalOther));
+                BarChart barChart = findViewById(R.id.chart);
+                BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
+                BarData barData = new BarData(barDataSet);
+                barChart.setData(barData);
+                barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                barDataSet.setValueTextColor(Color.BLACK);
+//                barChart.getDescription().setEnabled(true);
                 myAdapter.notifyDataSetChanged();
             }
 
@@ -154,12 +156,6 @@ public class MainScreen extends AppCompatActivity {
             }
         });
         Log.d(TAG, "new: "+ totalFood);
-        barArraylist = new ArrayList<>();
-        barArraylist.add(new BarEntry(1, totalFood));
-        barArraylist.add(new BarEntry(2, totalHome));
-        barArraylist.add(new BarEntry(3, totalShop));
-        barArraylist.add(new BarEntry(4, totalOther));
-
     }
 
     public void getUpdatedDate() {

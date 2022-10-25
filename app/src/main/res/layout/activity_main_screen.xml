@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#929fb3"
     tools:context=".MainScreen">
 
     <Button
@@ -93,7 +94,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#929fb3" />
+            />
 
     </TableLayout>
 

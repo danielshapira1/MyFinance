@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -30,9 +31,9 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        dateTextBox =(TextView) findViewById(R.id.datePicked);
+        dateTextBox = findViewById(R.id.datePicked);
         dateTextBox.setText(fDate);
-        Button button = (Button) findViewById(R.id.back);
+        Button button = findViewById(R.id.back);
         Button saveDate = findViewById(R.id.saveDate);
         saveDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +57,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
-        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
+        mCalendarView = findViewById(R.id.calendarView);
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int monthOfYear, int dayOfMonth) {
@@ -67,7 +68,7 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     public static String getSelectedDate() {
-        if (selectedDate != fDate){
+        if (!Objects.equals(selectedDate, fDate)){
         Log.d(TAG, "getSelectedDate: "+ selectedDate);
         return selectedDate;
 
