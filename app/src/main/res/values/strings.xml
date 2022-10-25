@@ -11,4 +11,8 @@
     <string name="login_failed">"Login failed"</string>
     <string name="create_new_account_here_signup">Create new account here: <b>Signup</b></string>
     <string name="already_have_account_login_here">already have account? login <b>here</b></string>
+    <string name="category">category</string>
+    <string name="date">date</string>
+    <string name="description">description</string>
+    <string name="amount">amount</string>
 </resources>

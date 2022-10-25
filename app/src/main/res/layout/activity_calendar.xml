@@ -21,8 +21,24 @@
 
     <CalendarView
         android:id="@+id/calendarView"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/saveDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:text="change date" />
+
+    <TextView
+        android:id="@+id/datePicked"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="" />
 
 
 </LinearLayout>

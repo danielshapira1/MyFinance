@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="46dp">
+
+<TableLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="0dip">
+
+        <TextView
+            android:id="@+id/costFiled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dip"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/descriptionFiled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dip"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/dateFiled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dip"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/categoryFiled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dip"
+            android:text="" />
+    </TableRow>
+
+</TableLayout>
+</LinearLayout>

@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
@@ -46,6 +48,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 validateData();
             }
+
         });
         binding.goToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +73,7 @@ public class SignupActivity extends AppCompatActivity {
             binding.emailText.setError("invalid email");
         }
         else if (TextUtils.isEmpty(email))
-            binding.emailText.setError("invalid email");
+            binding.emailText.setError("filed cannot be empty");
         else if (TextUtils.isEmpty(pass))
             binding.passwordText.setError("invalid password");
         else if(pass.length()<6)
@@ -89,7 +92,7 @@ public class SignupActivity extends AppCompatActivity {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 String email = firebaseUser.getEmail();
                 Toast.makeText(SignupActivity.this, "account created/n"+email ,Toast.LENGTH_SHORT).show();
-                Button button =(Button) findViewById(R.id.loginBtn);
+                Button button = findViewById(R.id.signupBtn);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
