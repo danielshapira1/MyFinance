@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.039" />
 
     <Button
-        android:id="@+id/calender"
+        android:id="@+id/calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="change dates"
@@ -33,14 +33,14 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart"
-        android:layout_width="300dp"
-        android:layout_height="315dp"
+        android:layout_width="256dp"
+        android:layout_height="282dp"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.83" />
+        app:layout_constraintVertical_bias="0.679" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -93,10 +93,23 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
     </TableLayout>
+
+    <TextView
+        android:id="@+id/show_selected_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="14dp"
+        android:text="Selected Date is : "
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
