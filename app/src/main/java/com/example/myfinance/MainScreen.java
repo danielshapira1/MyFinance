@@ -16,7 +16,6 @@ import android.widget.Button;
 import com.example.myfinance.databinding.ActivityMainScreenBinding;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -57,24 +56,10 @@ public class MainScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("payments").child("newPayment");
         uid = auth.getCurrentUser().getUid().toString();
-        Button moveToPaymentScreen = findViewById(R.id.createNewPayment);
-        Button moveToCalenderScreen = findViewById(R.id.calendar);
+        Button moveToPaymentScreen = (Button) findViewById(R.id.createNewPayment);
+        Button moveToCalenderScreen = (Button) findViewById(R.id.calender);
         Date cDate = new Date();
         String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
-
-        barArraylist = new ArrayList<>();
-        barArraylist.add(new BarEntry(1, totalFood));
-        barArraylist.add(new BarEntry(2, totalHome));
-        barArraylist.add(new BarEntry(3, totalShop));
-        barArraylist.add(new BarEntry(4, totalOther));
-        BarChart barChart = findViewById(R.id.chart);
-        BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
-        BarData barData = new BarData(barDataSet);
-        barChart.setData(barData);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        XAxis xAxisRight = barChart.getXAxis();
-        xAxisRight.setEnabled(false);
 
         date = fDate;
         Log.d(TAG, "onCreate: " + date);
@@ -109,6 +94,17 @@ public class MainScreen extends AppCompatActivity {
             }
         });
 
+        barArraylist = new ArrayList<>();
+        barArraylist.add(new BarEntry(1, totalFood));
+        barArraylist.add(new BarEntry(2, totalHome));
+        barArraylist.add(new BarEntry(3, totalShop));
+        barArraylist.add(new BarEntry(4, totalOther));
+        BarChart barChart = findViewById(R.id.chart);
+        BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
+        BarData barData = new BarData(barDataSet);
+        barChart.setData(barData);
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
 
     }
 
@@ -149,8 +145,8 @@ public class MainScreen extends AppCompatActivity {
                         totalOther += parse;
                     }
                 }
-
-
+                Log.d(TAG, "onDataChange: "+ totalFood);
+                barArraylist = new ArrayList<>();
                 barArraylist.add(new BarEntry(1, totalFood));
                 barArraylist.add(new BarEntry(2, totalHome));
                 barArraylist.add(new BarEntry(3, totalShop));
@@ -161,8 +157,7 @@ public class MainScreen extends AppCompatActivity {
                 barChart.setData(barData);
                 barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                 barDataSet.setValueTextColor(Color.BLACK);
-                XAxis xAxisRight = barChart.getXAxis();
-                xAxisRight.setEnabled(false);
+//                barChart.getDescription().setEnabled(true);
                 myAdapter.notifyDataSetChanged();
             }
 

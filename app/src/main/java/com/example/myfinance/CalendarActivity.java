@@ -69,7 +69,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     public static String getSelectedDate() {
         if (!Objects.equals(selectedDate, fDate)){
-
+        Log.d(TAG, "getSelectedDate: "+ selectedDate);
         return selectedDate;
 
         }
