@@ -67,4 +67,16 @@ public class Payment {
     public void setuEmail(String uEmail) {
         this.uEmail = uEmail;
     }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "cost='" + cost + '\'' +
+                ", date='" + date + '\'' +
+                ", category='" + category + '\'' +
+                ", description='" + description + '\'' +
+                ", uid='" + uid + '\'' +
+                ", uEmail='" + uEmail + '\'' +
+                '}';
+    }
 }

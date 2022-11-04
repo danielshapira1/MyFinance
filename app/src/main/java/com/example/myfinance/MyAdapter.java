@@ -1,10 +1,12 @@
 package com.example.myfinance;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +40,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         holder.description.setText(payment.getDescription());
         holder.date.setText(payment.getDate());
         holder.category.setText(payment.getCategory());
+        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -46,6 +55,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
     }
 
     public static class PaymentViewholder extends RecyclerView.ViewHolder {
+        View layout;
         TextView cost;
         TextView description;
         TextView date;
@@ -54,6 +64,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         public PaymentViewholder(@NonNull View itemView) {
             super(itemView);
 
+            layout = itemView.findViewById(R.id.singel_ayment_layout);
             cost = itemView.findViewById(R.id.costFiled);
             description = itemView.findViewById(R.id.descriptionFiled);
             date = itemView.findViewById(R.id.dateFiled);
