@@ -57,16 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 validateData();
             }
         });
-//    Button button = findViewById(R.id.loginBtn);
-//    button.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            validateData();
-//            Intent intent = new Intent(LoginActivity.this,MainScreen.class);
-//            startActivity(intent);
-//
-//        }
-//    });
+
     }
 
     private void checkUser() {
