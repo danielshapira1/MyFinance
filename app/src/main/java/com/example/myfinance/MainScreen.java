@@ -117,7 +117,7 @@ public class MainScreen extends AppCompatActivity {
                     String costStr = dataSnapshot.child("cost").getValue().toString();
                     int cost = Integer.parseInt(costStr);
 
-                    //Testing
+                    //Testin6
                     Log.d(TAG, "Payment from Firebase:\n" + payment);
                     Log.d(TAG, "currentCategory child from Firebase:\n" + currentCategory);
                     Log.d(TAG, "cost child from Firebase:\n" + cost);
