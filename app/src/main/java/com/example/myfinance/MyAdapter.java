@@ -71,7 +71,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
             category = itemView.findViewById(R.id.categoryFiled);
         }
     }
-
+    /*
     deleteUserDtn.setOnClickListener(v -> {
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE)
@@ -88,6 +88,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         dialog.getWindow().setBackgroundDrawableResource(R.color.background);
         dialog.show();
     });
-
+    */
 
 }
