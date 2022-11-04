@@ -72,5 +72,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         }
     }
 
+    deleteUserDtn.setOnClickListener(v -> {
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            if (which == DialogInterface.BUTTON_POSITIVE)
+                ServerRequestsService.getInstance().deleteUser(()-> requireActivity().runOnUiThread(()->
+                        Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment)
+                ));
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);
+
+        builder.setMessage("Are you sure you what to delete your user?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener);
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(R.color.background);
+        dialog.show();
+    });
+
 
 }
