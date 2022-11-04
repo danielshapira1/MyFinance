@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.myfinance.databinding.ActivityMainScreenBinding;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -31,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class MainScreen extends AppCompatActivity {
     ArrayList barArraylist;
@@ -42,6 +45,7 @@ public class MainScreen extends AppCompatActivity {
     ArrayList<Payment> listPayments;
     String currentUserUid;
     String currentDateString;
+    String dateString;
     private TextView startDateTV;
     private TextView endDateTV;
     int totalHome = 0;
@@ -67,12 +71,12 @@ public class MainScreen extends AppCompatActivity {
 
         //date = currentDateString;
         Log.d(TAG, "onCreate: " + currentDateString);
-        getUpdatedDate();
+        //getUpdatedDate();
         Log.d(TAG, "onUpdate: " + currentDateString);
-        date = currentDateString;
+        dateString = currentDateString;
         if (startDateTV.getText().toString().isEmpty() || endDateTV.getText().toString().isEmpty()) {
-            startDateTV.setText(date);
-            endDateTV.setText(date);
+            startDateTV.setText(currentDateString);
+            endDateTV.setText(currentDateString);
 
         }
         getUpdates();
@@ -122,7 +126,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void filterData(int min, int max) {
-        dbRef.child(currentUserUid).orderByChild("date").equalTo(date).addValueEventListener(new ValueEventListener() {
+        dbRef.child(currentUserUid).orderByChild("date").equalTo(dateString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -239,7 +243,7 @@ public class MainScreen extends AppCompatActivity {
         String newStart = FilterActivity.getSearchByFilter().get(0);
         String newEnd = FilterActivity.getSearchByFilter().get(1);
 
-        if (!Objects.equals(newStart, date) && newStart != null && !Objects.equals(newEnd, date) && newEnd != null) {
+        if (!Objects.equals(newStart, dateString) && newStart != null && !Objects.equals(newEnd, dateString) && newEnd != null) {
 
             startDateTV.setText(newStart);
             endDateTV.setText(newEnd);
