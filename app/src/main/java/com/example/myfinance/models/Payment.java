@@ -1,6 +1,7 @@
 package com.example.myfinance.models;
 
 public class Payment {
+    String id;
     String cost;
     String date;
     String category;
@@ -18,6 +19,14 @@ public class Payment {
         this.description = description;
         this.uid = uid;
         this.uEmail = uEmail;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCost() {
