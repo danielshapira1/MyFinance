@@ -28,9 +28,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -46,8 +52,8 @@ public class MainScreen extends AppCompatActivity {
     String currentUserUid;
     String currentDateString;
     String dateString;
-    private TextView startDateTV;
-    private TextView endDateTV;
+     TextView startDateTV;
+     TextView endDateTV;
     int totalHome = 0;
     int totalShop = 0;
     int totalFood = 0;
@@ -62,17 +68,15 @@ public class MainScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("payments").child("newPayment");
         currentUserUid = auth.getCurrentUser().getUid().toString();
-        Button moveToPaymentScreen = (Button) findViewById(R.id.createNewPayment);
-        Button moveToCalenderScreen = (Button) findViewById(R.id.calender);
+        Button moveToPaymentScreen = findViewById(R.id.createNewPayment);
+        Button moveToCalenderScreen = findViewById(R.id.calender);
         Date currentDate = new Date();
-        currentDateString = new SimpleDateFormat("dd/MM/yyyy").format(currentDate);
+        currentDateString = new SimpleDateFormat("yyyy/MM/dd").format(currentDate);
+
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
 
-        //date = currentDateString;
-        Log.d(TAG, "onCreate: " + currentDateString);
-        //getUpdatedDate();
-        Log.d(TAG, "onUpdate: " + currentDateString);
+
         dateString = currentDateString;
         if (startDateTV.getText().toString().isEmpty() || endDateTV.getText().toString().isEmpty()) {
             startDateTV.setText(currentDateString);
@@ -81,14 +85,28 @@ public class MainScreen extends AppCompatActivity {
         }
         getUpdates();
 
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date startDateFormatterCheck = null;
+        Date endDateFormatterCheck = null;
+        try {
+            startDateFormatterCheck = formatter.parse(startDateTV.getText().toString());
+            endDateFormatterCheck = formatter.parse(endDateTV.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "date: "+startDateFormatterCheck);
+        long epochTimeStart = startDateFormatterCheck.getTime() / 1000;
+        long epochTimeEnd = endDateFormatterCheck.getTime() / 1000;
+
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         listPayments = new ArrayList<>();
         myAdapter = new MyAdapter(this, listPayments);
         recyclerView.setAdapter(myAdapter);
-        
-        getDataByDate(startDateTV.getText().toString().trim(), endDateTV.getText().toString().trim());
+
+        getDataByDate(epochTimeStart, epochTimeEnd);
 
         moveToPaymentScreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,18 +128,7 @@ public class MainScreen extends AppCompatActivity {
         });
 
         barArraylist = new ArrayList<>();
-        barArraylist.add(new BarEntry(1, totalFood));
-        barArraylist.add(new BarEntry(2, totalHome));
-        barArraylist.add(new BarEntry(3, totalShop));
-        barArraylist.add(new BarEntry(4, totalOther));
-        BarChart barChart = findViewById(R.id.chart);
-        BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
-        BarData barData = new BarData(barDataSet);
-        barChart.setData(barData);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        XAxis xAxisRight = barChart.getXAxis();
-        xAxisRight.setEnabled(false);
+        updateBarChart(totalHome, totalShop, totalFood, totalOther);
 
     }
 
@@ -157,20 +164,8 @@ public class MainScreen extends AppCompatActivity {
                             break;
                     }
                 }
-                Log.d(TAG, "onDataChange: "+ totalFood);
-                barArraylist = new ArrayList<>();
-                barArraylist.add(new BarEntry(1, totalFood));
-                barArraylist.add(new BarEntry(2, totalHome));
-                barArraylist.add(new BarEntry(3, totalShop));
-                barArraylist.add(new BarEntry(4, totalOther));
-                BarChart barChart = findViewById(R.id.chart);
-                BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
-                BarData barData = new BarData(barDataSet);
-                barChart.setData(barData);
-                barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                barDataSet.setValueTextColor(Color.BLACK);
-                XAxis xAxisRight = barChart.getXAxis();
-                xAxisRight.setEnabled(false);
+                Log.d(TAG, "onDataChange: " + totalFood);
+                updateBarChart(totalHome, totalShop, totalFood, totalOther);
                 myAdapter.notifyDataSetChanged();
             }
 
@@ -179,11 +174,11 @@ public class MainScreen extends AppCompatActivity {
 
             }
         });
-        Log.d(TAG, "new: "+ totalFood);
+        Log.d(TAG, "new: " + totalFood);
     }
 
-    private void getDataByDate(String startDate, String endDate) {
-        dbRef.child(currentUserUid).orderByChild("date").startAfter(startDate).endBefore(endDate).addValueEventListener(new ValueEventListener() {
+    private void getDataByDate(long startDate, long endDate) {
+        dbRef.child(currentUserUid).orderByChild("date").startAfter(startDate).endAt(endDate).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -194,10 +189,6 @@ public class MainScreen extends AppCompatActivity {
                     String costStr = dataSnapshot.child("cost").getValue().toString();
                     int cost = Integer.parseInt(costStr);
 
-                    //Testing
-                    Log.d(TAG, "Payment from Firebase:\n" + payment);
-                    Log.d(TAG, "currentCategory child from Firebase:\n" + currentCategory);
-                    Log.d(TAG, "cost child from Firebase:\n" + cost);
 
                     switch (currentCategory) {
                         case "food":
@@ -214,20 +205,8 @@ public class MainScreen extends AppCompatActivity {
                             break;
                     }
                 }
-                Log.d(TAG, "onDataChange: "+ totalFood);
-                barArraylist = new ArrayList<>();
-                barArraylist.add(new BarEntry(1, totalFood));
-                barArraylist.add(new BarEntry(2, totalHome));
-                barArraylist.add(new BarEntry(3, totalShop));
-                barArraylist.add(new BarEntry(4, totalOther));
-                BarChart barChart = findViewById(R.id.chart);
-                BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
-                BarData barData = new BarData(barDataSet);
-                barChart.setData(barData);
-                barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                barDataSet.setValueTextColor(Color.BLACK);
-                XAxis xAxisRight = barChart.getXAxis();
-                xAxisRight.setEnabled(false);
+
+                updateBarChart(totalHome, totalShop, totalFood, totalOther);
                 myAdapter.notifyDataSetChanged();
             }
 
@@ -250,6 +229,19 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-
-
+    public void updateBarChart(int totalHome, int totalShop, int totalFood, int totalOther) {
+        barArraylist = new ArrayList<>();
+        barArraylist.add(new BarEntry(1, totalFood));
+        barArraylist.add(new BarEntry(2, totalHome));
+        barArraylist.add(new BarEntry(3, totalShop));
+        barArraylist.add(new BarEntry(4, totalOther));
+        BarChart barChart = findViewById(R.id.chart);
+        BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
+        BarData barData = new BarData(barDataSet);
+        barChart.setData(barData);
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        XAxis xAxisRight = barChart.getXAxis();
+        xAxisRight.setEnabled(false);
+    }
 }
