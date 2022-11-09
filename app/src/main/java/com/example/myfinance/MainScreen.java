@@ -74,10 +74,11 @@ public class MainScreen extends AppCompatActivity {
         //getUpdatedDate();
         Log.d(TAG, "onUpdate: " + currentDateString);
         dateString = currentDateString;
-        if (startDateTV.getText().toString().isEmpty() || endDateTV.getText().toString().isEmpty()) {
+        if (startDateTV.getText().toString().isEmpty()) {
             startDateTV.setText(currentDateString);
+        }
+        if (endDateTV.getText().toString().isEmpty()){
             endDateTV.setText(currentDateString);
-
         }
         getUpdates();
 
@@ -87,7 +88,7 @@ public class MainScreen extends AppCompatActivity {
         listPayments = new ArrayList<>();
         myAdapter = new MyAdapter(this, listPayments);
         recyclerView.setAdapter(myAdapter);
-        
+
         getDataByDate(startDateTV.getText().toString().trim(), endDateTV.getText().toString().trim());
 
         moveToPaymentScreen.setOnClickListener(new View.OnClickListener() {
@@ -125,79 +126,95 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
-    private void filterData(int min, int max) {
-        dbRef.child(currentUserUid).orderByChild("date").equalTo(dateString).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Payment payment = dataSnapshot.getValue(Payment.class);
-                    listPayments.add(payment);
-                    String currentCategory = dataSnapshot.child("category").getValue().toString();
-
-                    String costStr = dataSnapshot.child("cost").getValue().toString();
-                    int cost = Integer.parseInt(costStr);
-
-                    //Testing
-                    Log.d(TAG, "Payment from Firebase:\n" + payment);
-                    Log.d(TAG, "currentCategory child from Firebase:\n" + currentCategory);
-                    Log.d(TAG, "cost child from Firebase:\n" + cost);
-
-                    switch (currentCategory) {
-                        case "food":
-                            totalFood += cost;
-                            break;
-                        case "home":
-                            totalHome += cost;
-                            break;
-                        case "shopping":
-                            totalShop += cost;
-                            break;
-                        case "other":
-                            totalOther += cost;
-                            break;
-                    }
-                }
-                Log.d(TAG, "onDataChange: "+ totalFood);
-                barArraylist = new ArrayList<>();
-                barArraylist.add(new BarEntry(1, totalFood));
-                barArraylist.add(new BarEntry(2, totalHome));
-                barArraylist.add(new BarEntry(3, totalShop));
-                barArraylist.add(new BarEntry(4, totalOther));
-                BarChart barChart = findViewById(R.id.chart);
-                BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
-                BarData barData = new BarData(barDataSet);
-                barChart.setData(barData);
-                barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                barDataSet.setValueTextColor(Color.BLACK);
-                XAxis xAxisRight = barChart.getXAxis();
-                xAxisRight.setEnabled(false);
-                myAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        Log.d(TAG, "new: "+ totalFood);
-    }
+//    private void filterData(int min, int max) {
+//        dbRef.child(currentUserUid).orderByChild("date").equalTo(dateString).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    Payment payment = dataSnapshot.getValue(Payment.class);
+//                    listPayments.add(payment);
+//                    String currentCategory = dataSnapshot.child("category").getValue().toString();
+//
+//                    String costStr = dataSnapshot.child("cost").getValue().toString();
+//                    int cost = Integer.parseInt(costStr);
+//
+//                    //Testing
+//                    Log.d(TAG, "Payment from Firebase:\n" + payment);
+//                    Log.d(TAG, "currentCategory child from Firebase:\n" + currentCategory);
+//                    Log.d(TAG, "cost child from Firebase:\n" + cost);
+//
+//                    switch (currentCategory) {
+//                        case "food":
+//                            totalFood += cost;
+//                            break;
+//                        case "home":
+//                            totalHome += cost;
+//                            break;
+//                        case "shopping":
+//                            totalShop += cost;
+//                            break;
+//                        case "other":
+//                            totalOther += cost;
+//                            break;
+//                    }
+//                }
+//                Log.d(TAG, "onDataChange: "+ totalFood);
+//                barArraylist = new ArrayList<>();
+//                barArraylist.add(new BarEntry(1, totalFood));
+//                barArraylist.add(new BarEntry(2, totalHome));
+//                barArraylist.add(new BarEntry(3, totalShop));
+//                barArraylist.add(new BarEntry(4, totalOther));
+//                BarChart barChart = findViewById(R.id.chart);
+//                BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
+//                BarData barData = new BarData(barDataSet);
+//                barChart.setData(barData);
+//                barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+//                barDataSet.setValueTextColor(Color.BLACK);
+//                XAxis xAxisRight = barChart.getXAxis();
+//                xAxisRight.setEnabled(false);
+//                myAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//        Log.d(TAG, "new: "+ totalFood);
+//    }
 
     private void getDataByDate(String startDate, String endDate) {
-        dbRef.child(currentUserUid).orderByChild("date").startAfter(startDate).endBefore(endDate).addValueEventListener(new ValueEventListener() {
+        Log.d(TAG, "$$ dates: " + startDate + " - " + endDate);
+        dbRef.child(currentUserUid)
+            .orderByChild("date")
+            .startAt(startDate)
+            .endAt(endDate)
+            .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listPayments.clear();
+//                int paymentIndex = 0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Payment payment = dataSnapshot.getValue(Payment.class);
+                    if (payment==null) {
+                        return;
+                    }
+                    payment.setId(dataSnapshot.getKey());
+//                    Log.d(TAG, "$$ Payment " + paymentIndex + " from firebase:\n" + payment);
+//                    paymentIndex++;
                     listPayments.add(payment);
-                    String currentCategory = dataSnapshot.child("category").getValue().toString();
+                    String currentCategory =
+                            dataSnapshot.child("category").getValue() != null ?
+                                    dataSnapshot.child("category").getValue().toString() :
+                                    "";
 
                     String costStr = dataSnapshot.child("cost").getValue().toString();
                     int cost = Integer.parseInt(costStr);
 
-                    //Testing
-                    Log.d(TAG, "Payment from Firebase:\n" + payment);
-                    Log.d(TAG, "currentCategory child from Firebase:\n" + currentCategory);
-                    Log.d(TAG, "cost child from Firebase:\n" + cost);
+//                    Testing
+//                    Log.d(TAG, "Payment from Firebase:\n" + payment);
+//                    Log.d(TAG, "currentCategory child from Firebase:\n" + currentCategory);
+//                    Log.d(TAG, "cost child from Firebase:\n" + cost);
 
                     switch (currentCategory) {
                         case "food":
@@ -214,7 +231,7 @@ public class MainScreen extends AppCompatActivity {
                             break;
                     }
                 }
-                Log.d(TAG, "onDataChange: "+ totalFood);
+//                Log.d(TAG, "onDataChange: "+ totalFood);
                 barArraylist = new ArrayList<>();
                 barArraylist.add(new BarEntry(1, totalFood));
                 barArraylist.add(new BarEntry(2, totalHome));
