@@ -25,7 +25,7 @@ public class FilterActivity extends AppCompatActivity {
 
     private static ArrayList<String> returnValues;
     static Date cDate = new Date();
-    static String fDate = new SimpleDateFormat("yyyy/MM/dd").format(cDate);
+    static String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
 
     private String date;
     private String startDate;
@@ -78,9 +78,9 @@ public class FilterActivity extends AppCompatActivity {
                     public void onPositiveButtonClick(Pair<Long, Long> selection) {
 
                         startDate = String.valueOf(selection.first);
-                        startDateVal = new SimpleDateFormat("yyyy/MM/dd").format(selection.first);
+                        startDateVal = new SimpleDateFormat("dd/MM/yyyy").format(selection.first);
                         endDate = String.valueOf(selection.second);
-                        endDateVal = new SimpleDateFormat("yyyy/MM/dd").format(selection.second);
+                        endDateVal = new SimpleDateFormat("dd/MM/yyyy").format(selection.second);
 
                         startDateTV.setText(startDateVal);
                         endDateTV.setText(endDateVal);
