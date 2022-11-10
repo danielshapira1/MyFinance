@@ -260,9 +260,10 @@ public class MainScreen extends AppCompatActivity {
         String newStart = FilterActivity.getSearchByFilter().get(0);
         String newEnd = FilterActivity.getSearchByFilter().get(1);
 
-        if (!Objects.equals(newStart, dateString) && newStart != null && !Objects.equals(newEnd, dateString) && newEnd != null) {
-
+        if (!Objects.equals(newStart, dateString) && newStart != null) {
             startDateTV.setText(newStart);
+        }
+        if (!Objects.equals(newEnd, dateString) && newEnd != null){
             endDateTV.setText(newEnd);
         }
     }

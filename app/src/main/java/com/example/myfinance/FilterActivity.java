@@ -48,12 +48,16 @@ public class FilterActivity extends AppCompatActivity {
         endDateTV = findViewById(R.id.endDateTV);
 
         date = fDate;
-        if (startDateTV.getText().toString().isEmpty() && startDateVal == null || endDateTV.getText().toString().isEmpty() && endDateVal == null) {
-            endDateTV.setText(date);
+        if (startDateTV.getText().toString().isEmpty() && startDateVal == null) {
             startDateTV.setText(date);
         } else {
-            endDateTV.setText(endDateVal);
             startDateTV.setText(startDateVal);
+        }
+        if (endDateTV.getText().toString().isEmpty() && endDateVal == null) {
+            endDateTV.setText(date);
+        }
+        else {
+            endDateTV.setText(endDateVal);
         }
         searchDate.setOnClickListener(new View.OnClickListener() {
             @Override
