@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -21,15 +23,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class FilterActivity extends AppCompatActivity {
+    static String[] categories = {"all categories", "food", "home", "shopping", "Other"};
 
 
-    private static ArrayList<String> returnValues;
     static Date cDate = new Date();
     static String fDate = new SimpleDateFormat("yyyy/MM/dd").format(cDate);
 
-    private String date;
     private String startDate;
     private TextView startDateTV;
+    private static Spinner category;
     private static String startDateVal;
     private static String endDateVal;
     private String endDate;
@@ -46,8 +48,10 @@ public class FilterActivity extends AppCompatActivity {
         Button searchDate = findViewById(R.id.searchDate);
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
+        category = findViewById(R.id.category);
 
-        date = fDate;
+
+        String date = fDate;
         if (startDateTV.getText().toString().isEmpty() && startDateVal == null || endDateTV.getText().toString().isEmpty() && endDateVal == null) {
             endDateTV.setText(date);
             startDateTV.setText(date);
@@ -81,15 +85,10 @@ public class FilterActivity extends AppCompatActivity {
                         startDateVal = new SimpleDateFormat("yyyy/MM/dd").format(selection.first);
                         endDate = String.valueOf(selection.second);
                         endDateVal = new SimpleDateFormat("yyyy/MM/dd").format(selection.second);
-
                         startDateTV.setText(startDateVal);
                         endDateTV.setText(endDateVal);
-
-
                     }
                 });
-
-
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -100,12 +99,14 @@ public class FilterActivity extends AppCompatActivity {
 
             }
         });
-
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category.setAdapter(aa);
 
     }
 
     public static ArrayList<String> getSearchByFilter() {
-        returnValues = new ArrayList<>();
+        ArrayList<String> returnValues = new ArrayList<>();
         if (startDateVal == null)
             returnValues.add(fDate);
         else
@@ -114,6 +115,10 @@ public class FilterActivity extends AppCompatActivity {
             returnValues.add(fDate);
         else
             returnValues.add(endDateVal);
+        if (category == null)
+            returnValues.add("all categories");
+        else
+            returnValues.add(category.getSelectedItem().toString());
 
 
         Log.d(TAG, "getSearchByFilter: " + returnValues);
