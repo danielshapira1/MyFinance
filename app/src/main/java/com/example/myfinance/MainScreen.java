@@ -28,15 +28,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -53,8 +47,8 @@ public class MainScreen extends AppCompatActivity {
     String currentDateString;
     String dateString;
     TextView categoryTV;
-     TextView startDateTV;
-     TextView endDateTV;
+    private TextView startDateTV;
+    private TextView endDateTV;
     int totalHome = 0;
     int totalShop = 0;
     int totalFood = 0;
@@ -69,39 +63,26 @@ public class MainScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("payments").child("newPayment");
         currentUserUid = auth.getCurrentUser().getUid().toString();
-        Button moveToPaymentScreen = findViewById(R.id.createNewPayment);
-        Button moveToCalenderScreen = findViewById(R.id.calender);
+        Button moveToPaymentScreen = (Button) findViewById(R.id.createNewPayment);
+        Button moveToCalenderScreen = (Button) findViewById(R.id.calender);
         Date currentDate = new Date();
-        currentDateString = new SimpleDateFormat("yyyy/MM/dd").format(currentDate);
-
+        currentDateString = new SimpleDateFormat("dd/MM/yyyy").format(currentDate);
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
         categoryTV = findViewById(R.id.categoryView);
 
-
+        //date = currentDateString;
+        Log.d(TAG, "onCreate: " + currentDateString);
+        //getUpdatedDate();
+        Log.d(TAG, "onUpdate: " + currentDateString);
         dateString = currentDateString;
-        if (startDateTV.getText().toString().isEmpty() || endDateTV.getText().toString().isEmpty()) {
+        if (startDateTV.getText().toString().isEmpty()) {
             startDateTV.setText(currentDateString);
+        }
+        if (endDateTV.getText().toString().isEmpty()){
             endDateTV.setText(currentDateString);
-
         }
         getUpdates();
-
-
-
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date startDateFormatterCheck = null;
-        Date endDateFormatterCheck = null;
-        try {
-            startDateFormatterCheck = formatter.parse(startDateTV.getText().toString());
-            endDateFormatterCheck = formatter.parse(endDateTV.getText().toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "date: "+startDateFormatterCheck);
-        long epochTimeStart = startDateFormatterCheck.getTime() / 1000;
-        long epochTimeEnd = endDateFormatterCheck.getTime() / 1000;
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -110,7 +91,7 @@ public class MainScreen extends AppCompatActivity {
         myAdapter = new MyAdapter(this, listPayments);
         recyclerView.setAdapter(myAdapter);
 
-        getDataByDate(String.valueOf(epochTimeStart), epochTimeEnd);
+        getDataByDate(startDateTV.getText().toString().trim(), endDateTV.getText().toString().trim());
 
         moveToPaymentScreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,23 +117,36 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
-    private void filterData(int min, int max) {
-        dbRef.child(currentUserUid).orderByChild("date").equalTo(dateString).addValueEventListener(new ValueEventListener() {
+
+
+    private void getDataByDate(String startDate, String endDate) {
+        Log.d(TAG, "$$ dates: " + startDate + " - " + endDate);
+        dbRef.child(currentUserUid)
+            .orderByChild("date")
+            .startAt(startDate)
+            .endAt(endDate)
+            .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listPayments.clear();
+//                int paymentIndex = 0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Payment payment = dataSnapshot.getValue(Payment.class);
+                    if (payment==null) {
+                        return;
+                    }
+                    payment.setId(dataSnapshot.getKey());
+//                    Log.d(TAG, "$$ Payment " + paymentIndex + " from firebase:\n" + payment);
+//                    paymentIndex++;
                     listPayments.add(payment);
-                    String currentCategory = dataSnapshot.child("category").getValue().toString();
+                    String currentCategory =
+                            dataSnapshot.child("category").getValue() != null ?
+                                    dataSnapshot.child("category").getValue().toString() :
+                                    "";
 
                     String costStr = dataSnapshot.child("cost").getValue().toString();
                     int cost = Integer.parseInt(costStr);
-
-                    //Testing
-                    Log.d(TAG, "Payment from Firebase:\n" + payment);
-                    Log.d(TAG, "currentCategory child from Firebase:\n" + currentCategory);
-                    Log.d(TAG, "cost child from Firebase:\n" + cost);
-
+                    
                     switch (currentCategory) {
                         case "food":
                             totalFood += cost;
@@ -168,7 +162,7 @@ public class MainScreen extends AppCompatActivity {
                             break;
                     }
                 }
-                Log.d(TAG, "onDataChange: " + totalFood);
+               
                 updateBarChart(totalHome, totalShop, totalFood, totalOther);
                 myAdapter.notifyDataSetChanged();
             }
@@ -178,7 +172,7 @@ public class MainScreen extends AppCompatActivity {
 
             }
         });
-        Log.d(TAG, "new: " + totalFood);
+        
     }
 
     private void getDataByDate(String startDate, long endDate) {
@@ -268,9 +262,11 @@ public class MainScreen extends AppCompatActivity {
         String newEnd = FilterActivity.getSearchByFilter().get(1);
 
 
-        if (!Objects.equals(newStart, dateString) && newStart != null && !Objects.equals(newEnd, dateString) && newEnd != null) {
 
+        if (!Objects.equals(newStart, dateString) && newStart != null) {
             startDateTV.setText(newStart);
+        }
+        if (!Objects.equals(newEnd, dateString) && newEnd != null){
             endDateTV.setText(newEnd);
         }
         categoryTV.setText(FilterActivity.getSearchByFilter().get(2));

@@ -1,7 +1,5 @@
 package com.example.myfinance;
 
-import static com.example.myfinance.MainScreen.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -26,15 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class NewPaymentScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String[] categories = {"food", "home", "shopping", "Other"};
@@ -73,11 +64,7 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
         addbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    createNewPayment();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                createNewPayment();
 
             }
         });
@@ -98,29 +85,14 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
             public void onClick(View v) {
                 final Calendar cldr = Calendar.getInstance();
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
-                if (day<10)
-                    day= Integer.parseInt("0"+day);
                 int month = cldr.get(Calendar.MONTH);
-                if (month<10)
-                    month= Integer.parseInt("0"+month);
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
                 picker = new DatePickerDialog(NewPaymentScreen.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                monthOfYear= monthOfYear+1;
-                                String formattedMonth = "" + monthOfYear;
-                                String formattedDayOfMonth = "" + dayOfMonth;
-                                if(monthOfYear<10){
-                                    formattedMonth= "0"+monthOfYear;
-                                }
-//                                Log.d(TAG, "onDateSet: "+);
-                                if (dayOfMonth<10){
-                                    formattedDayOfMonth= "0"+dayOfMonth;
-                                }
-                                date.setText(year + "/" + formattedMonth + "/" + formattedDayOfMonth);
-
+                                date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                             }
                         }, year, month, day);
                 picker.show();
@@ -134,19 +106,24 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
 
     }
 
-    private void createNewPayment() throws ParseException {
+    private void createNewPayment() {
         String cCost = cost.getText().toString();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date formatterCheck = formatter.parse(date.getText().toString());
-
-        long epochTime = formatterCheck.getTime()/1000;
-        String cDate = String.valueOf(epochTime);
+        String cDate = date.getText().toString();
+        if (cDate.charAt(1) == '/') {
+            cDate = "0" + cDate;
+        }
+        if (cDate.charAt(4) == '/'){
+            String temp1 = cDate.substring(0,3);
+            String temp2 = cDate.substring(3);
+            cDate = temp1 + "0" + temp2;
+        }
         String cCategory = category.getSelectedItem().toString();
         String cDesc = description.getText().toString();
         String cUid = uid;
         String cEmail = uEmail;
         if (TextUtils.isEmpty(cCost)) {
             cost.setError("cost cannot be empty");
+
         } else if (TextUtils.isEmpty(cDate)) {
             date.setError("date cannot be empty");
         } else {
@@ -155,6 +132,8 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
             Intent intent = new Intent(NewPaymentScreen.this, MainScreen.class);
             startActivity(intent);
         }
+
+
     }
 
 

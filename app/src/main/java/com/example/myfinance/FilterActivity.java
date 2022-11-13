@@ -27,8 +27,9 @@ public class FilterActivity extends AppCompatActivity {
 
 
     static Date cDate = new Date();
-    static String fDate = new SimpleDateFormat("yyyy/MM/dd").format(cDate);
+    static String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
 
+    private String date;
     private String startDate;
     private TextView startDateTV;
     private static Spinner category;
@@ -50,14 +51,17 @@ public class FilterActivity extends AppCompatActivity {
         endDateTV = findViewById(R.id.endDateTV);
         category = findViewById(R.id.category);
 
-
-        String date = fDate;
-        if (startDateTV.getText().toString().isEmpty() && startDateVal == null || endDateTV.getText().toString().isEmpty() && endDateVal == null) {
-            endDateTV.setText(date);
+        date = fDate;
+        if (startDateTV.getText().toString().isEmpty() && startDateVal == null) {
             startDateTV.setText(date);
         } else {
-            endDateTV.setText(endDateVal);
             startDateTV.setText(startDateVal);
+        }
+        if (endDateTV.getText().toString().isEmpty() && endDateVal == null) {
+            endDateTV.setText(date);
+        }
+        else {
+            endDateTV.setText(endDateVal);
         }
         searchDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +86,10 @@ public class FilterActivity extends AppCompatActivity {
                     public void onPositiveButtonClick(Pair<Long, Long> selection) {
 
                         startDate = String.valueOf(selection.first);
-                        startDateVal = new SimpleDateFormat("yyyy/MM/dd").format(selection.first);
+                        startDateVal = new SimpleDateFormat("dd/MM/yyyy").format(selection.first);
                         endDate = String.valueOf(selection.second);
-                        endDateVal = new SimpleDateFormat("yyyy/MM/dd").format(selection.second);
+                        endDateVal = new SimpleDateFormat("dd/MM/yyyy").format(selection.second);
+
                         startDateTV.setText(startDateVal);
                         endDateTV.setText(endDateVal);
                     }
