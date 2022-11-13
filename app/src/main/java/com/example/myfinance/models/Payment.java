@@ -1,9 +1,12 @@
 package com.example.myfinance.models;
 
+import com.example.myfinance.Util;
+
 public class Payment {
     String id;
     String cost;
     String date;
+    String dateFormatted;
     String category;
     String description;
     String uid;
@@ -12,13 +15,19 @@ public class Payment {
     public Payment() {
     }
 
+
     public Payment(String cost, String date, String category, String description, String uid, String uEmail) {
         this.cost = cost;
-        this.date = date;
+
+        this.date = Util.fixDateFormat(date);
+        this.dateFormatted = Util.fixDateFormatTolexicographicOrder(this.date);
+
         this.category = category;
         this.description = description;
         this.uid = uid;
         this.uEmail = uEmail;
+        
+
     }
 
     public String getId() {
@@ -75,6 +84,14 @@ public class Payment {
 
     public void setuEmail(String uEmail) {
         this.uEmail = uEmail;
+    }
+
+    public String getDateFormatted() {
+        return dateFormatted;
+    }
+
+    public void setDateFormatted(String dateFormatted) {
+        this.dateFormatted = dateFormatted;
     }
 
     @Override
