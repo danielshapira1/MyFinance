@@ -26,7 +26,7 @@
             android:layout_width="308dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="insert cost amount -- nis"
+            android:hint="enter payment amount "
             android:selectAllOnFocus="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
