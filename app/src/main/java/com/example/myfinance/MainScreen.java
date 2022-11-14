@@ -120,11 +120,18 @@ public class MainScreen extends AppCompatActivity {
 
 
     private void getDataByDate(String startDate, String endDate) {
-        Log.d(TAG, "$$ dates: " + startDate + " - " + endDate);
+
+        String startDateFixed = Util.fixDateFormat(startDate);
+        startDateFixed = Util.fixDateFormatTolexicographicOrder(startDateFixed);
+
+        String endDateFixed = Util.fixDateFormat(endDate);
+        endDateFixed = Util.fixDateFormatTolexicographicOrder(endDateFixed);
+
+        Log.d(TAG, "$$ dates (formatted): " + startDateFixed + " - " + endDateFixed);
         dbRef.child(currentUserUid)
-            .orderByChild("date")
-            .startAt(startDate)
-            .endAt(endDate)
+            .orderByChild("dateFormatted")
+            .startAt(startDateFixed)
+            .endAt(endDateFixed)
             .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

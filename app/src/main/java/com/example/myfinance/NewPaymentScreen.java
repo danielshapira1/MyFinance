@@ -109,14 +109,6 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
     private void createNewPayment() {
         String cCost = cost.getText().toString();
         String cDate = date.getText().toString();
-        if (cDate.charAt(1) == '/') {
-            cDate = "0" + cDate;
-        }
-        if (cDate.charAt(4) == '/'){
-            String temp1 = cDate.substring(0,3);
-            String temp2 = cDate.substring(3);
-            cDate = temp1 + "0" + temp2;
-        }
         String cCategory = category.getSelectedItem().toString();
         String cDesc = description.getText().toString();
         String cUid = uid;
