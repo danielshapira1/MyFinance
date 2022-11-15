@@ -48,6 +48,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         holder.date.setText(payment.getDate());
         holder.category.setText(payment.getCategory());
 
+
         holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

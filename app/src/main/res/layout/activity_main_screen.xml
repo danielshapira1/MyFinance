@@ -67,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#97a199"
                 android:padding="15dip"
                 android:text="@string/amount" />
 
@@ -75,6 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#97a199"
                 android:padding="15dip"
                 android:text="@string/description" />
 
@@ -83,6 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#97a199"
                 android:padding="15dip"
                 android:text="@string/date" />
 
@@ -91,15 +94,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#97a199"
                 android:padding="15dip"
                 android:text="@string/category" />
         </TableRow>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#d2d6d3">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
     </TableLayout>
 
     <TextView
@@ -166,5 +175,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calender"
         app:layout_constraintVertical_bias="0.02" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

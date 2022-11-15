@@ -19,6 +19,9 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,15 +29,15 @@ public class FilterActivity extends AppCompatActivity {
     static String[] categories = {"all categories", "food", "home", "shopping", "Other"};
 
 
-    static Date cDate = new Date();
-    static String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
 
-    private String date;
-    private String startDate;
+
+    private static String firstDay;
+    private static String lastDay;
     private TextView startDateTV;
     private static Spinner category;
     private static String startDateVal;
     private static String endDateVal;
+    private String startDate;
     private String endDate;
     private TextView endDateTV;
 
@@ -51,14 +54,19 @@ public class FilterActivity extends AppCompatActivity {
         endDateTV = findViewById(R.id.endDateTV);
         category = findViewById(R.id.category);
 
-        date = fDate;
+        LocalDate firstOfMonth = LocalDate.now().withDayOfMonth(1);
+        LocalDate lastOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        firstDay = formatter.format(firstOfMonth);
+        lastDay = formatter.format(lastOfMonth);
+
         if (startDateTV.getText().toString().isEmpty() && startDateVal == null) {
-            startDateTV.setText(date);
+            startDateTV.setText(firstDay);
         } else {
             startDateTV.setText(startDateVal);
         }
         if (endDateTV.getText().toString().isEmpty() && endDateVal == null) {
-            endDateTV.setText(date);
+            endDateTV.setText(lastDay);
         }
         else {
             endDateTV.setText(endDateVal);
@@ -113,11 +121,11 @@ public class FilterActivity extends AppCompatActivity {
     public static ArrayList<String> getSearchByFilter() {
         ArrayList<String> returnValues = new ArrayList<>();
         if (startDateVal == null)
-            returnValues.add(fDate);
+            returnValues.add(firstDay);
         else
             returnValues.add(startDateVal);
         if (endDateVal == null)
-            returnValues.add(fDate);
+            returnValues.add(lastDay);
         else
             returnValues.add(endDateVal);
         if (category == null)

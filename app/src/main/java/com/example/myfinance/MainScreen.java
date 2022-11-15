@@ -1,7 +1,6 @@
 package com.example.myfinance;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.myfinance.databinding.ActivityMainScreenBinding;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -23,14 +21,15 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -44,8 +43,9 @@ public class MainScreen extends AppCompatActivity {
     FirebaseAuth auth;
     ArrayList<Payment> listPayments;
     String currentUserUid;
-    String currentDateString;
-    String dateString;
+    String firstDay;
+    String lastDay;
+
     TextView categoryTV;
     private TextView startDateTV;
     private TextView endDateTV;
@@ -65,22 +65,26 @@ public class MainScreen extends AppCompatActivity {
         currentUserUid = auth.getCurrentUser().getUid().toString();
         Button moveToPaymentScreen = (Button) findViewById(R.id.createNewPayment);
         Button moveToCalenderScreen = (Button) findViewById(R.id.calender);
-        Date currentDate = new Date();
-        currentDateString = new SimpleDateFormat("dd/MM/yyyy").format(currentDate);
+         LocalDate firstOfMonth = LocalDate.now().withDayOfMonth(1);
+         LocalDate lastOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        firstDay = formatter.format(firstOfMonth);
+        lastDay = formatter.format(lastOfMonth);
+
+//        currentDateString = new SimpleDateFormat("dd/MM/yyyy").format(currentDate);
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
         categoryTV = findViewById(R.id.categoryView);
 
-        //date = currentDateString;
-        Log.d(TAG, "onCreate: " + currentDateString);
-        //getUpdatedDate();
-        Log.d(TAG, "onUpdate: " + currentDateString);
-        dateString = currentDateString;
+
+        Log.d(TAG, "onCreate: " + firstDay);
+        Log.d(TAG, "onCreate: " + lastDay);
+
         if (startDateTV.getText().toString().isEmpty()) {
-            startDateTV.setText(currentDateString);
+            startDateTV.setText(firstDay);
         }
-        if (endDateTV.getText().toString().isEmpty()){
-            endDateTV.setText(currentDateString);
+        if (endDateTV.getText().toString().isEmpty()) {
+            endDateTV.setText(lastDay);
         }
         getUpdates();
 
@@ -90,6 +94,7 @@ public class MainScreen extends AppCompatActivity {
         listPayments = new ArrayList<>();
         myAdapter = new MyAdapter(this, listPayments);
         recyclerView.setAdapter(myAdapter);
+//        getDataByCategory();
 
         getDataByDate(startDateTV.getText().toString().trim(), endDateTV.getText().toString().trim());
 
@@ -118,7 +123,6 @@ public class MainScreen extends AppCompatActivity {
     }
 
 
-
     private void getDataByDate(String startDate, String endDate) {
 
         String startDateFixed = Util.fixDateFormat(startDate);
@@ -129,102 +133,63 @@ public class MainScreen extends AppCompatActivity {
 
         Log.d(TAG, "$$ dates (formatted): " + startDateFixed + " - " + endDateFixed);
         dbRef.child(currentUserUid)
-            .orderByChild("dateFormatted")
-            .startAt(startDateFixed)
-            .endAt(endDateFixed)
-            .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listPayments.clear();
+                .orderByChild("dateFormatted")
+                .startAt(startDateFixed)
+                .endAt(endDateFixed)
+
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listPayments.clear();
 //                int paymentIndex = 0;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Payment payment = dataSnapshot.getValue(Payment.class);
-                    if (payment==null) {
-                        return;
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Payment payment = dataSnapshot.getValue(Payment.class);
+                            if (payment == null) {
+                                return;
+                            }
+                            payment.setId(dataSnapshot.getKey());
+
+                            listPayments.add(payment);
+                            String currentCategory =
+                                    dataSnapshot.child("category").getValue() != null ?
+                                            dataSnapshot.child("category").getValue().toString() :
+                                            "";
+
+                            String costStr = dataSnapshot.child("cost").getValue().toString();
+                            int cost = Integer.parseInt(costStr);
+
+                            switch (currentCategory) {
+                                case "food":
+                                    totalFood += cost;
+                                    break;
+                                case "home":
+                                    totalHome += cost;
+                                    break;
+                                case "shopping":
+                                    totalShop += cost;
+                                    break;
+                                case "other":
+                                    totalOther += cost;
+                                    break;
+                            }
+                        }
+
+                        updateBarChart(totalHome, totalShop, totalFood, totalOther);
+                        myAdapter.notifyDataSetChanged();
                     }
-                    payment.setId(dataSnapshot.getKey());
-//                    Log.d(TAG, "$$ Payment " + paymentIndex + " from firebase:\n" + payment);
-//                    paymentIndex++;
-                    listPayments.add(payment);
-                    String currentCategory =
-                            dataSnapshot.child("category").getValue() != null ?
-                                    dataSnapshot.child("category").getValue().toString() :
-                                    "";
 
-                    String costStr = dataSnapshot.child("cost").getValue().toString();
-                    int cost = Integer.parseInt(costStr);
-                    
-                    switch (currentCategory) {
-                        case "food":
-                            totalFood += cost;
-                            break;
-                        case "home":
-                            totalHome += cost;
-                            break;
-                        case "shopping":
-                            totalShop += cost;
-                            break;
-                        case "other":
-                            totalOther += cost;
-                            break;
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
-                }
-               
-                updateBarChart(totalHome, totalShop, totalFood, totalOther);
-                myAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        
-    }
-
-    private void getDataByDate(String startDate, long endDate) {
-       dbRef.child(currentUserUid).orderByKey().startAfter(startDate).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Payment payment = dataSnapshot.getValue(Payment.class);
-                    listPayments.add(payment);
-                    String currentCategory = dataSnapshot.child("category").getValue().toString();
-
-                    String costStr = dataSnapshot.child("cost").getValue().toString();
-                    int cost = Integer.parseInt(costStr);
-
-
-                    switch (currentCategory) {
-                        case "food":
-                            totalFood += cost;
-                            break;
-                        case "home":
-                            totalHome += cost;
-                            break;
-                        case "shopping":
-                            totalShop += cost;
-                            break;
-                        case "other":
-                            totalOther += cost;
-                            break;
-                    }
-                }
-
-                updateBarChart(totalHome, totalShop, totalFood, totalOther);
-                myAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+                });
 
     }
 
-    private void getDataByCategory(long startDate, long endDate) {
-        dbRef.child(currentUserUid).orderByChild("category").equalTo("food").addValueEventListener(new ValueEventListener() {
+    private void getDataByCategory() {
+//        if (Objects.equals(cat, "all categories"))
+
+        dbRef.child(currentUserUid).orderByChild("category").startAt("shopping").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -269,11 +234,10 @@ public class MainScreen extends AppCompatActivity {
         String newEnd = FilterActivity.getSearchByFilter().get(1);
 
 
-
-        if (!Objects.equals(newStart, dateString) && newStart != null) {
+        if (!Objects.equals(newStart, firstDay) && newStart != null) {
             startDateTV.setText(newStart);
         }
-        if (!Objects.equals(newEnd, dateString) && newEnd != null){
+        if (!Objects.equals(newEnd, lastDay) && newEnd != null) {
             endDateTV.setText(newEnd);
         }
         categoryTV.setText(FilterActivity.getSearchByFilter().get(2));

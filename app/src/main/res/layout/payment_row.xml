@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/singel_ayment_layout"
     android:layout_width="match_parent"
-    android:layout_height="46dp">
+    android:layout_height="30dp">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -12,39 +12,48 @@
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="0dip">
+            android:padding="0dip"
+            >
 
             <TextView
                 android:id="@+id/costFiled"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dip"
-                android:text="" />
+                android:background="@drawable/cell"
+                android:padding="6dip"
+                android:text=""
+                android:textAlignment="viewEnd" />
 
             <TextView
                 android:id="@+id/descriptionFiled"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dip"
-                android:text="" />
+                android:background="@drawable/cell"
+                android:padding="6dip"
+                android:text=""
+                android:textAlignment="viewEnd" />
 
             <TextView
                 android:id="@+id/dateFiled"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dip"
-                android:text="" />
+                android:background="@drawable/cell"
+                android:padding="6dip"
+                android:text=""
+                android:textAlignment="viewEnd" />
 
             <TextView
                 android:id="@+id/categoryFiled"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dip"
-                android:text="" />
+                android:background="@drawable/cell"
+                android:padding="6dip"
+                android:text=""
+                android:textAlignment="viewEnd" />
         </TableRow>
 
     </TableLayout>
