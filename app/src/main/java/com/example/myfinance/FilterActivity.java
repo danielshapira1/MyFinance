@@ -49,6 +49,7 @@ public class FilterActivity extends AppCompatActivity {
 
 
         Button button = findViewById(R.id.back);
+        Button save = findViewById(R.id.saveChange);
         Button searchDate = findViewById(R.id.searchDate);
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
@@ -105,6 +106,14 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FilterActivity.this, MainScreen.class);
+                startActivity(intent);
+
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FilterActivity.this, MainScreen.class);

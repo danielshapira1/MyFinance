@@ -22,10 +22,10 @@
         app:layout_constraintVertical_bias="0.039" />
 
     <Button
-        android:id="@+id/calender"
+        android:id="@+id/filters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="change dates"
+        android:text="change filters"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/createNewPayment"
         app:layout_constraintHorizontal_bias="0.111"
@@ -121,7 +121,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calender"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
         app:layout_constraintVertical_bias="0.755" />
 
     <TextView
@@ -134,7 +134,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calender"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
         app:layout_constraintVertical_bias="0.02" />
 
     <TextView
@@ -147,7 +147,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calender"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
         app:layout_constraintVertical_bias="0.755" />
 
     <TextView
@@ -160,7 +160,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calender"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
         app:layout_constraintVertical_bias="0.02" />
 
     <TextView
@@ -173,7 +173,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calender"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
         app:layout_constraintVertical_bias="0.02" />
 
 

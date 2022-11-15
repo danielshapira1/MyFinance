@@ -31,7 +31,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 
 public class MainScreen extends AppCompatActivity {
@@ -64,7 +63,7 @@ public class MainScreen extends AppCompatActivity {
         dbRef = database.getReference("payments").child("newPayment");
         currentUserUid = auth.getCurrentUser().getUid().toString();
         Button moveToPaymentScreen = (Button) findViewById(R.id.createNewPayment);
-        Button moveToCalenderScreen = (Button) findViewById(R.id.calender);
+        Button moveToCalenderScreen = (Button) findViewById(R.id.filters);
         LocalDate firstOfMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate lastOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

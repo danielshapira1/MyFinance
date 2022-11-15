@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class NewPaymentScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    String[] categories = {"food", "home", "shopping", "Other"};
+    String[] categories = {"food", "home", "shopping", "other"};
 
 
     private ActivityNewPaymentBinding binding;
