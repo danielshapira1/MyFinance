@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.myfinance.models.Payment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -48,37 +49,30 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         holder.date.setText(payment.getDate());
         holder.category.setText(payment.getCategory());
 
+        holder.deleteButton.setOnClickListener(view -> {
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
 
-        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
 
-                DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    database.getReference("payments/newPayment/" + payment.getUid() + "/" + payment.getId())
+                            .removeValue();
+                }
+                else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                    dialog.cancel();
+                }
+            };
 
-                    if (which == DialogInterface.BUTTON_POSITIVE) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        database.getReference("payments/newPayment/" + payment.getUid() + "/" + payment.getId())
-                                .removeValue();
-                    }
-                    else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                        dialog.cancel();
-                    }
-                };
+            builder.setTitle("Checking");
+            builder.setMessage("Are you sure you what to delete this payment?").
+                    setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            AlertDialog dialog = builder.create();
 
-                builder.setTitle("Checking");
-                builder.setMessage("Are you sure you what to delete this payment?").
-                        setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener);
-
-                AlertDialog dialog = builder.create();
-
-                dialog.show();
-
-                return false;
-            }
+            dialog.show();
         });
     }
 
@@ -93,6 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         TextView description;
         TextView date;
         TextView category;
+        FloatingActionButton deleteButton;
 
         public PaymentViewholder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +97,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
             description = itemView.findViewById(R.id.descriptionFiled);
             date = itemView.findViewById(R.id.dateFiled);
             category = itemView.findViewById(R.id.categoryFiled);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
 }
