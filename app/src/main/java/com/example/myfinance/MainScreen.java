@@ -202,10 +202,9 @@ public class MainScreen extends AppCompatActivity {
                                     }
                                 }
                             }
-
-                            updateBarChart(totalHome, totalShop, totalFood, totalOther);
-                            myAdapter.notifyDataSetChanged();
                         }
+                        updateBarChart(totalHome, totalShop, totalFood, totalOther);
+                        myAdapter.notifyDataSetChanged();
                     }
 
                     @Override
