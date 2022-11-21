@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -29,8 +31,6 @@ public class FilterActivity extends AppCompatActivity {
     static String[] categories = {"all categories", "food", "home", "shopping", "Other"};
 
 
-
-
     private static String firstDay;
     private static String lastDay;
     private TextView startDateTV;
@@ -40,6 +40,8 @@ public class FilterActivity extends AppCompatActivity {
     private String startDate;
     private String endDate;
     private TextView endDateTV;
+    private static EditText min;
+    private static EditText max;
 
 
     @Override
@@ -54,6 +56,8 @@ public class FilterActivity extends AppCompatActivity {
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
         category = findViewById(R.id.category);
+        min = findViewById(R.id.editTextNumberMin);
+        max = findViewById(R.id.editTextNumberMax);
 
         LocalDate firstOfMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate lastOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
@@ -68,9 +72,13 @@ public class FilterActivity extends AppCompatActivity {
         }
         if (endDateTV.getText().toString().isEmpty() && endDateVal == null) {
             endDateTV.setText(lastDay);
-        }
-        else {
+        } else {
             endDateTV.setText(endDateVal);
+        }
+        if (min.getText().toString().isEmpty()) {
+            min.setText(String.valueOf(0));
+        }  if (max.getText().toString().isEmpty()) {
+            max.setText(String.valueOf(1000000));
         }
         searchDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,16 +117,29 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FilterActivity.this, MainScreen.class);
-                startActivity(intent);
 
+
+                if (Integer.parseInt(min.getText().toString()) > Integer.parseInt(max.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Hello Javatpoint", Toast.LENGTH_SHORT).show();
+                } else
+                    startActivity(intent);
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FilterActivity.this, MainScreen.class);
-                startActivity(intent);
 
+                if (min.getText().toString().isEmpty()) {
+                    min.setText(0);
+                } else if (max.getText().toString().isEmpty()) {
+                    max.setText(Integer.MAX_VALUE);
+                }
+
+                if (Integer.parseInt(min.getText().toString()) > Integer.parseInt(max.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "min value cant be bigger then max", Toast.LENGTH_SHORT).show();
+                } else
+                    startActivity(intent);
             }
         });
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
@@ -141,8 +162,14 @@ public class FilterActivity extends AppCompatActivity {
             returnValues.add("all categories");
         else
             returnValues.add(category.getSelectedItem().toString());
-
-
+        if (min == null) {
+            returnValues.add("0");
+        } else
+            returnValues.add(min.getText().toString());
+        if (max == null)
+            returnValues.add(String.valueOf("1000000"));
+        else
+            returnValues.add(max.getText().toString());
         Log.d(TAG, "getSearchByFilter: " + returnValues);
         return returnValues;
     }

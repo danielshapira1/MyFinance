@@ -31,7 +31,6 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
     String[] categories = {"food", "home", "shopping", "other"};
 
 
-    private ActivityNewPaymentBinding binding;
     EditText cost;
     EditText description;
     Spinner category;
@@ -47,7 +46,6 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityNewPaymentBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_new_payment);
         addbtn = (Button) findViewById(R.id.save);
         auth = FirebaseAuth.getInstance();
@@ -58,8 +56,8 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
         category = findViewById(R.id.category);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("payments").child("newPayment");
-        uid = auth.getCurrentUser().getUid().toString();
-        uEmail = auth.getCurrentUser().getEmail().toString();
+        uid = auth.getCurrentUser().getUid();
+        uEmail = auth.getCurrentUser().getEmail();
 
         addbtn.setOnClickListener(new View.OnClickListener() {
             @Override

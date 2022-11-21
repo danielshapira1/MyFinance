@@ -193,5 +193,31 @@
         app:layout_constraintTop_toBottomOf="@+id/filters"
         app:layout_constraintVertical_bias="0.02" />
 
+    <TextView
+        android:id="@+id/minView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="min"
+        app:layout_constraintBottom_toTopOf="@+id/chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.738"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <TextView
+        android:id="@+id/maxView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="max"
+        app:layout_constraintBottom_toTopOf="@+id/chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.744"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
+        app:layout_constraintVertical_bias="0.755" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

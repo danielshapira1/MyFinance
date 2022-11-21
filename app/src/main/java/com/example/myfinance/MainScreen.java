@@ -46,6 +46,8 @@ public class MainScreen extends AppCompatActivity {
     String lastDay;
 
     TextView categoryTV;
+    TextView minTV;
+    TextView maxTV;
     private TextView startDateTV;
     private TextView endDateTV;
     int totalHome = 0;
@@ -72,6 +74,8 @@ public class MainScreen extends AppCompatActivity {
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
         categoryTV = findViewById(R.id.categoryView);
+        minTV = findViewById(R.id.minView);
+        maxTV = findViewById(R.id.maxView);
 
         if (startDateTV.getText().toString().isEmpty()) {
             startDateTV.setText(firstDay);
@@ -91,7 +95,9 @@ public class MainScreen extends AppCompatActivity {
 
         getDataByDate(startDateTV.getText().toString().trim(),
                 endDateTV.getText().toString().trim(),
-                categoryTV.getText().toString().trim());
+                categoryTV.getText().toString().trim(),
+                Integer.parseInt(minTV.getText().toString().trim()),
+                Integer.parseInt(maxTV.getText().toString().trim()));
 
         moveToPaymentScreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +114,6 @@ public class MainScreen extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainScreen.this, FilterActivity.class);
                 startActivity(intent);
-
             }
         });
 
@@ -118,7 +123,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
 
-    private void getDataByDate(String startDate, String endDate, String category) {
+    private void getDataByDate(String startDate, String endDate, String category, int min, int max) {
 
         String startDateFixed = Util.fixDateFormat(startDate);
         startDateFixed = Util.fixDateFormatTolexicographicOrder(startDateFixed);
@@ -131,46 +136,17 @@ public class MainScreen extends AppCompatActivity {
                 .orderByChild("dateFormatted")
                 .startAt(startDateFixed)
                 .endAt(endDateFixed)
-
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         listPayments.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Log.d(TAG, "onDataChange: " + dataSnapshot.child("category").getValue());
-                            if (category.equals("all categories")) {
-                                Payment payment = dataSnapshot.getValue(Payment.class);
-                                if (payment == null) {
-                                    return;
-                                }
-                                payment.setId(dataSnapshot.getKey());
+                            if (Integer.parseInt((String) dataSnapshot.child("cost").getValue()) >
+                                    Integer.parseInt(minTV.getText().toString()) &&
+                                    Integer.parseInt((String) dataSnapshot.child("cost").getValue()) <
+                                            Integer.parseInt(maxTV.getText().toString())) {
 
-                                listPayments.add(payment);
-                                String currentCategory =
-                                        dataSnapshot.child("category").getValue() != null ?
-                                                dataSnapshot.child("category").getValue().toString() :
-                                                "";
-
-                                String costStr = dataSnapshot.child("cost").getValue().toString();
-                                int cost = Integer.parseInt(costStr);
-
-                                switch (currentCategory) {
-                                    case "food":
-                                        totalFood += cost;
-                                        break;
-                                    case "home":
-                                        totalHome += cost;
-                                        break;
-                                    case "shopping":
-                                        totalShop += cost;
-                                        break;
-                                    case "other":
-                                        totalOther += cost;
-                                        break;
-                                }
-                            } else {
-                                if (dataSnapshot.child("category").getValue().toString().contains(finalCategory)) {
-
+                                if (category.equals("all categories")) {
                                     Payment payment = dataSnapshot.getValue(Payment.class);
                                     if (payment == null) {
                                         return;
@@ -200,6 +176,39 @@ public class MainScreen extends AppCompatActivity {
                                             totalOther += cost;
                                             break;
                                     }
+                                } else {
+                                    if (dataSnapshot.child("category").getValue().toString().contains(finalCategory)) {
+
+                                        Payment payment = dataSnapshot.getValue(Payment.class);
+                                        if (payment == null) {
+                                            return;
+                                        }
+                                        payment.setId(dataSnapshot.getKey());
+
+                                        listPayments.add(payment);
+                                        String currentCategory =
+                                                dataSnapshot.child("category").getValue() != null ?
+                                                        dataSnapshot.child("category").getValue().toString() :
+                                                        "";
+
+                                        String costStr = dataSnapshot.child("cost").getValue().toString();
+                                        int cost = Integer.parseInt(costStr);
+
+                                        switch (currentCategory) {
+                                            case "food":
+                                                totalFood += cost;
+                                                break;
+                                            case "home":
+                                                totalHome += cost;
+                                                break;
+                                            case "shopping":
+                                                totalShop += cost;
+                                                break;
+                                            case "other":
+                                                totalOther += cost;
+                                                break;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -215,54 +224,10 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
-    private void getDataByCategory() {
-//        if (Objects.equals(cat, "all categories"))
-
-        dbRef.child(currentUserUid).orderByChild("category").startAt("shopping").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Payment payment = dataSnapshot.getValue(Payment.class);
-                    listPayments.add(payment);
-                    String currentCategory = dataSnapshot.child("category").getValue().toString();
-
-                    String costStr = dataSnapshot.child("cost").getValue().toString();
-                    int cost = Integer.parseInt(costStr);
-
-
-                    switch (currentCategory) {
-                        case "food":
-                            totalFood += cost;
-                            break;
-                        case "home":
-                            totalHome += cost;
-                            break;
-                        case "shopping":
-                            totalShop += cost;
-                            break;
-                        case "other":
-                            totalOther += cost;
-                            break;
-                    }
-                }
-
-                updateBarChart(totalHome, totalShop, totalFood, totalOther);
-                myAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
 
     public void getUpdates() {
         String newStart = FilterActivity.getSearchByFilter().get(0);
         String newEnd = FilterActivity.getSearchByFilter().get(1);
-
-
         if (!Objects.equals(newStart, firstDay) && newStart != null) {
             startDateTV.setText(newStart);
         }
@@ -271,8 +236,10 @@ public class MainScreen extends AppCompatActivity {
         }
         categoryTV.setText(FilterActivity.getSearchByFilter().get(2));
 
-    }
+        minTV.setText(FilterActivity.getSearchByFilter().get(3));
+        maxTV.setText(FilterActivity.getSearchByFilter().get(4));
 
+    }
 
     public void updateBarChart(int totalHome, int totalShop, int totalFood, int totalOther) {
         barArraylist = new ArrayList<>();
