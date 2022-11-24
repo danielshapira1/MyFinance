@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <TableRow
+            android:id="@+id/tableRow"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="0dip">

@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#888</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="DeepSkyBlue">#00BBFF</color>
+    <color name="Orchid">#DA70D6</color>
+    <color name="PaleGreen">#98FB98</color>
 </resources>

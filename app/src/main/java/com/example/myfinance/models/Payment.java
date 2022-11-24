@@ -20,7 +20,7 @@ public class Payment {
         this.cost = cost;
 
         this.date = Util.fixDateFormat(date);
-        this.dateFormatted = Util.fixDateFormatTolexicographicOrder(this.date);
+        this.dateFormatted = Util.fixDateFormatToLexicographicOrder(this.date);
 
         this.category = category;
         this.description = description;

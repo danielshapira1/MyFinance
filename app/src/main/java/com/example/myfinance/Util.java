@@ -25,7 +25,7 @@ public class Util {
 
 
     // Fixes format for lexicographic order: dd/MM/yyyy -> yyyy/MM/dd
-    public static String fixDateFormatTolexicographicOrder(String dateAsDdMmYyyy) {
+    public static String fixDateFormatToLexicographicOrder(String dateAsDdMmYyyy) {
 
         if (dateAsDdMmYyyy==null) {
             return null;

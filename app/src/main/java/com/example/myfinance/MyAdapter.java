@@ -8,6 +8,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         holder.description.setText(payment.getDescription());
         holder.date.setText(payment.getDate());
         holder.category.setText(payment.getCategory());
-
+        holder.tableRow.setBackgroundResource(getBackgroundColor(payment.getCategory()));
         holder.deleteButton.setOnClickListener(view -> {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
 
@@ -76,6 +77,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         });
     }
 
+    private int getBackgroundColor(String category){
+        switch (category){
+            case "food":
+                return R.color.yellow;
+            case "home":
+                return R.color.DeepSkyBlue;
+            case "shopping":
+                return R.color.Orchid;
+            case "other":
+                return R.color.PaleGreen;
+        }
+        return R.color.white;
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -88,6 +103,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         TextView date;
         TextView category;
         FloatingActionButton deleteButton;
+        TableRow tableRow;
 
         public PaymentViewholder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +114,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
             date = itemView.findViewById(R.id.dateFiled);
             category = itemView.findViewById(R.id.categoryFiled);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            tableRow = itemView.findViewById(R.id.tableRow);
         }
     }
 }
