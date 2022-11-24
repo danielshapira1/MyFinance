@@ -84,7 +84,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
             case "home":
                 return R.color.DeepSkyBlue;
             case "shopping":
-                return R.color.Orchid;
+                return R.color.Violet;
             case "other":
                 return R.color.PaleGreen;
         }
