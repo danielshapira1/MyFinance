@@ -81,11 +81,9 @@ public class LoginActivity extends AppCompatActivity {
         email = binding.emailText.getText().toString().trim();
         pass = binding.passwordText.getText().toString().trim();
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if((!Patterns.EMAIL_ADDRESS.matcher(email).matches()) || TextUtils.isEmpty(email)){
             binding.emailText.setError("invalid email");
         }
-        else if (TextUtils.isEmpty(email))
-            binding.emailText.setError("invalid email");
         else if (TextUtils.isEmpty(pass))
             binding.passwordText.setError("invalid password");
         else if(pass.length()<6)
@@ -104,16 +102,16 @@ public class LoginActivity extends AppCompatActivity {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         String email = firebaseUser.getEmail();
                         Toast.makeText(LoginActivity.this, "account logged in/n"+email ,Toast.LENGTH_SHORT).show();
-                        Button button =(Button) findViewById(R.id.loginBtn);
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+//                        Button button =(Button) findViewById(R.id.loginBtn);
+//                        button.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
                                 Intent intent = new Intent(LoginActivity.this,MainScreen.class);
                                 startActivity(intent);
                                 finish();
 
-                            }
-                        });
+//                            }
+//                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
