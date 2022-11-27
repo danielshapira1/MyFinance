@@ -90,12 +90,7 @@ public class FilterActivity extends AppCompatActivity {
 
                 MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
 
-                searchDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        materialDatePicker.show(getSupportFragmentManager(), "date picker");
-                    }
-                });
+                materialDatePicker.show(getSupportFragmentManager(), "date picker");
 
                 materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
                     @SuppressLint("SetTextI18n")
@@ -137,7 +132,7 @@ public class FilterActivity extends AppCompatActivity {
                 }
 
                 if (Integer.parseInt(min.getText().toString()) > Integer.parseInt(max.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "min value cant be bigger then max", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "min value can't be bigger then max", Toast.LENGTH_SHORT).show();
                 } else
                     startActivity(intent);
             }

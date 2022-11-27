@@ -2,23 +2,21 @@ package com.example.myfinance;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -247,12 +245,18 @@ public class MainScreen extends AppCompatActivity {
         barArraylist.add(new BarEntry(3, totalShop));
         barArraylist.add(new BarEntry(4, totalOther));
         BarChart barChart = findViewById(R.id.chart);
-        BarDataSet barDataSet = new BarDataSet(barArraylist, "my spendings");
+        BarDataSet barDataSet = new BarDataSet(barArraylist, "My spending's");
         BarData barData = new BarData(barDataSet);
         barChart.setData(barData);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setColors(ContextCompat.getColor(MainScreen.this, R.color.yellow),
+                ContextCompat.getColor(MainScreen.this, R.color.DeepSkyBlue),
+                ContextCompat.getColor(MainScreen.this, R.color.Violet),
+                ContextCompat.getColor(MainScreen.this, R.color.PaleGreen));
         barDataSet.setValueTextColor(Color.BLACK);
+        barChart.getDescription().setEnabled(false);
         XAxis xAxisRight = barChart.getXAxis();
         xAxisRight.setEnabled(false);
+        barChart.invalidate();
+        barChart.refreshDrawableState();
     }
 }
