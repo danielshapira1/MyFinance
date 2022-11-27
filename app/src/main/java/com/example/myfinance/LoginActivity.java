@@ -102,16 +102,9 @@ public class LoginActivity extends AppCompatActivity {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         String email = firebaseUser.getEmail();
                         Toast.makeText(LoginActivity.this, "account logged in/n"+email ,Toast.LENGTH_SHORT).show();
-//                        Button button =(Button) findViewById(R.id.loginBtn);
-//                        button.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-                                Intent intent = new Intent(LoginActivity.this,MainScreen.class);
-                                startActivity(intent);
-                                finish();
-
-//                            }
-//                        });
+                        Intent intent = new Intent(LoginActivity.this,MainScreen.class);
+                        startActivity(intent);
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
