@@ -29,7 +29,7 @@
             android:layout_width="308dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="enter payment amount "
+            android:hint="Enter payment amount "
             android:selectAllOnFocus="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,7 +45,11 @@
             android:id="@+id/text_date_display"
             android:layout_width="308dp"
             android:layout_height="wrap_content"
-            android:hint="enter date"
+            android:hint="Enter date (Default: today)"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:layout_gravity="center"
             android:selectAllOnFocus="true" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +66,7 @@
             android:layout_width="308dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:hint="category"
+            android:hint="Category"
 
             android:selectAllOnFocus="true" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -80,7 +84,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:layout_gravity="center"
-        android:hint="description (optional)"
+        android:hint="Description (optional)"
         android:selectAllOnFocus="true"
         />
     </com.google.android.material.textfield.TextInputLayout>

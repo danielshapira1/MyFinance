@@ -248,15 +248,19 @@ public class MainScreen extends AppCompatActivity {
         BarDataSet barDataSet = new BarDataSet(barArraylist, "My spending's");
         BarData barData = new BarData(barDataSet);
         barChart.setData(barData);
-        barDataSet.setColors(ContextCompat.getColor(MainScreen.this, R.color.yellow),
-                ContextCompat.getColor(MainScreen.this, R.color.DeepSkyBlue),
-                ContextCompat.getColor(MainScreen.this, R.color.Violet),
-                ContextCompat.getColor(MainScreen.this, R.color.PaleGreen));
+        barDataSet.setColors(gColor(R.color.yellow),
+                gColor(R.color.DeepSkyBlue),
+                gColor(R.color.Violet),
+                gColor(R.color.PaleGreen));
         barDataSet.setValueTextColor(Color.BLACK);
         barChart.getDescription().setEnabled(false);
         XAxis xAxisRight = barChart.getXAxis();
         xAxisRight.setEnabled(false);
         barChart.invalidate();
         barChart.refreshDrawableState();
+    }
+    // This function is for readable purpose to prevent DRY code
+    private int gColor(int color){
+        return ContextCompat.getColor(this, color);
     }
 }

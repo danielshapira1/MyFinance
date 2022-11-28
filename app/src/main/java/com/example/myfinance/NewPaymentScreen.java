@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,8 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class NewPaymentScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String[] categories = {"food", "home", "shopping", "other"};
@@ -111,18 +111,19 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
         String cDesc = description.getText().toString();
         String cUid = uid;
         String cEmail = uEmail;
+        if (TextUtils.isEmpty(cDate)){
+            Date tDate = Calendar.getInstance().getTime();
+            SimpleDateFormat SDFormat = new SimpleDateFormat("dd/MM/yyyy");
+            cDate = SDFormat.format(tDate);
+        }
         if (TextUtils.isEmpty(cCost)) {
             cost.setError("cost cannot be empty");
-
-        } else if (TextUtils.isEmpty(cDate)) {
-            date.setError("date cannot be empty");
         } else {
             Payment payment = new Payment(cCost, cDate, cCategory, cDesc, cUid, cEmail);
             myRef.child(uid).push().setValue(payment);
             Intent intent = new Intent(NewPaymentScreen.this, MainScreen.class);
             startActivity(intent);
         }
-
 
     }
 
