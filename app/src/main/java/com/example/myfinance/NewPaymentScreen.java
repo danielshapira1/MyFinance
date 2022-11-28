@@ -115,9 +115,7 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
         String cUid = uid;
         String cEmail = uEmail;
         if (TextUtils.isEmpty(cDate)){
-            Date tDate = Calendar.getInstance().getTime();
-            SimpleDateFormat SDFormat = new SimpleDateFormat("dd/MM/yyyy");
-            cDate = SDFormat.format(tDate);
+            cDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         }
         if (TextUtils.isEmpty(cCost)) {
             cost.setError("cost cannot be empty");

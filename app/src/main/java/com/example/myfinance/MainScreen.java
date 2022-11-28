@@ -142,6 +142,10 @@ public class MainScreen extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         listPayments.clear();
+                        totalFood = 0;
+                        totalHome = 0;
+                        totalOther = 0;
+                        totalShop = 0;
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             if (Integer.parseInt((String) dataSnapshot.child("cost").getValue()) >
                                     Integer.parseInt(textMinTV.getText().toString()) &&
@@ -262,7 +266,6 @@ public class MainScreen extends AppCompatActivity {
         XAxis xAxisRight = barChart.getXAxis();
         xAxisRight.setEnabled(false);
         barChart.invalidate();
-        barChart.refreshDrawableState();
     }
     // This function is for readable purpose to prevent DRY code
     private int gColor(int color){
