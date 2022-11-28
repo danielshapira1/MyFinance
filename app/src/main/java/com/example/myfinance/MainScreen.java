@@ -45,6 +45,9 @@ public class MainScreen extends AppCompatActivity {
     TextView categoryTV;
     TextView minTV;
     TextView maxTV;
+    TextView textCategoryTV;
+    TextView textMinTV;
+    TextView textMaxTV;
     private TextView startDateTV;
     private TextView endDateTV;
     int totalHome = 0;
@@ -71,8 +74,11 @@ public class MainScreen extends AppCompatActivity {
         startDateTV = findViewById(R.id.startDateTV);
         endDateTV = findViewById(R.id.endDateTV);
         categoryTV = findViewById(R.id.categoryView);
+        textCategoryTV = findViewById(R.id.selectedCategory);
         minTV = findViewById(R.id.minView);
+        textMinTV = findViewById(R.id.minCost);
         maxTV = findViewById(R.id.maxView);
+        textMaxTV = findViewById(R.id.maxCost);
 
         if (startDateTV.getText().toString().isEmpty()) {
             startDateTV.setText(firstDay);
@@ -92,9 +98,9 @@ public class MainScreen extends AppCompatActivity {
 
         getDataByDate(startDateTV.getText().toString().trim(),
                 endDateTV.getText().toString().trim(),
-                categoryTV.getText().toString().trim(),
-                Integer.parseInt(minTV.getText().toString().trim()),
-                Integer.parseInt(maxTV.getText().toString().trim()));
+                textCategoryTV.getText().toString().trim(),
+                Integer.parseInt(textMinTV.getText().toString().trim()),
+                Integer.parseInt(textMaxTV.getText().toString().trim()));
 
         moveToPaymentScreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +134,6 @@ public class MainScreen extends AppCompatActivity {
         String endDateFixed = Util.fixDateFormat(endDate);
         endDateFixed = Util.fixDateFormatToLexicographicOrder(endDateFixed);
 
-        String finalCategory = category;
         dbRef.child(currentUserUid)
                 .orderByChild("dateFormatted")
                 .startAt(startDateFixed)
@@ -139,9 +144,9 @@ public class MainScreen extends AppCompatActivity {
                         listPayments.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             if (Integer.parseInt((String) dataSnapshot.child("cost").getValue()) >
-                                    Integer.parseInt(minTV.getText().toString()) &&
+                                    Integer.parseInt(textMinTV.getText().toString()) &&
                                     Integer.parseInt((String) dataSnapshot.child("cost").getValue()) <
-                                            Integer.parseInt(maxTV.getText().toString())) {
+                                            Integer.parseInt(textMaxTV.getText().toString())) {
 
                                 if (category.equals("all categories")) {
                                     Payment payment = dataSnapshot.getValue(Payment.class);
@@ -174,7 +179,7 @@ public class MainScreen extends AppCompatActivity {
                                             break;
                                     }
                                 } else {
-                                    if (dataSnapshot.child("category").getValue().toString().contains(finalCategory)) {
+                                    if (dataSnapshot.child("category").getValue().toString().contains(category)) {
 
                                         Payment payment = dataSnapshot.getValue(Payment.class);
                                         if (payment == null) {
@@ -231,10 +236,10 @@ public class MainScreen extends AppCompatActivity {
         if (!Objects.equals(newEnd, lastDay) && newEnd != null) {
             endDateTV.setText(newEnd);
         }
-        categoryTV.setText(FilterActivity.getSearchByFilter().get(2));
+        textCategoryTV.setText(FilterActivity.getSearchByFilter().get(2));
 
-        minTV.setText(FilterActivity.getSearchByFilter().get(3));
-        maxTV.setText(FilterActivity.getSearchByFilter().get(4));
+        textMinTV.setText(FilterActivity.getSearchByFilter().get(3));
+        textMaxTV.setText(FilterActivity.getSearchByFilter().get(4));
 
     }
 

@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myfinance.databinding.ActivityLoginBinding;
 import com.example.myfinance.databinding.ActivityNewPaymentBinding;
@@ -28,9 +30,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class NewPaymentScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    String[] categories = {"food", "home", "shopping", "other"};
+    String[] categories = {"select category","food", "home", "shopping", "other"};
 
-
+    private ActivityNewPaymentBinding binding;
     EditText cost;
     EditText description;
     Spinner category;
@@ -46,6 +48,7 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityNewPaymentBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_new_payment);
         addbtn = (Button) findViewById(R.id.save);
         auth = FirebaseAuth.getInstance();
@@ -118,7 +121,13 @@ public class NewPaymentScreen extends AppCompatActivity implements AdapterView.O
         }
         if (TextUtils.isEmpty(cCost)) {
             cost.setError("cost cannot be empty");
-        } else {
+        }
+            else if(cCategory.equals("select category")){
+            TextView errorTextview = (TextView) category.getSelectedView();
+            errorTextview.setError("Your Error Message here");
+            Toast.makeText(NewPaymentScreen.this, "please select a category" ,Toast.LENGTH_SHORT).show();
+        }
+        else {
             Payment payment = new Payment(cCost, cDate, cCategory, cDesc, cUid, cEmail);
             myRef.child(uid).push().setValue(payment);
             Intent intent = new Intent(NewPaymentScreen.this, MainScreen.class);
