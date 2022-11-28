@@ -27,6 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
     Context context;
     ArrayList<Payment> list;
 
+
     public MyAdapter(Context context, ArrayList<Payment> list) {
         this.context = context;
         this.list = list;

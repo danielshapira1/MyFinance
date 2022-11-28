@@ -64,8 +64,8 @@ public class MainScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("payments").child("newPayment");
         currentUserUid = auth.getCurrentUser().getUid().toString();
-        Button moveToPaymentScreen = (Button) findViewById(R.id.createNewPayment);
-        Button moveToCalenderScreen = (Button) findViewById(R.id.filters);
+        View moveToPaymentScreen =  findViewById(R.id.createNewPayment);
+        View moveToCalenderScreen = findViewById(R.id.filters);
         LocalDate firstOfMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate lastOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -225,7 +225,6 @@ public class MainScreen extends AppCompatActivity {
                 });
 
     }
-
 
     public void getUpdates() {
         String newStart = FilterActivity.getSearchByFilter().get(0);
