@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
@@ -65,7 +64,8 @@ public class MainScreen extends AppCompatActivity {
         dbRef = database.getReference("payments").child("newPayment");
         currentUserUid = auth.getCurrentUser().getUid().toString();
         View moveToPaymentScreen =  findViewById(R.id.createNewPayment);
-        View moveToCalenderScreen = findViewById(R.id.filters);
+        View moveToMonthsScreen = findViewById(R.id.months);
+        View moveToFilterScreen = findViewById(R.id.filters);
         LocalDate firstOfMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate lastOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -111,7 +111,16 @@ public class MainScreen extends AppCompatActivity {
             }
         });
 
-        moveToCalenderScreen.setOnClickListener(new View.OnClickListener() {
+        moveToMonthsScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainScreen.this, MonthsActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        moveToFilterScreen.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {

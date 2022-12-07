@@ -115,7 +115,7 @@ public class FilterActivity extends AppCompatActivity {
 
 
                 if (Integer.parseInt(min.getText().toString()) > Integer.parseInt(max.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Hello Javatpoint", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "min cannot have larger value then max", Toast.LENGTH_SHORT).show();
                 } else
                     startActivity(intent);
             }
