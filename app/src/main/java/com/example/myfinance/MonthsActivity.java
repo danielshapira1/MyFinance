@@ -1,7 +1,9 @@
 package com.example.myfinance;
 
 import static com.example.myfinance.MainScreen.TAG;
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 
 import androidx.annotation.NonNull;
@@ -29,13 +31,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MonthsActivity extends AppCompatActivity {
+    private static enum DisplayData{
+        FOOD,
+        HOME,
+        SHOPPING,
+        OTHER,
+        ALL,
+        SUM
+    }
     ArrayList barArraylist;
     DatabaseReference dbRef;
     FirebaseAuth auth;
     String currentUserUid;
+    DisplayData displayData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +68,17 @@ public class MonthsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MonthsActivity.this, MainScreen.class);
                 startActivity(intent);
-
             }
         });
         LocalDate now = LocalDate.now();
-        LocalDate firstDay = now.with(firstDayOfYear()); // 2015-01-01
-        LocalDate lastDay = now.with(lastDayOfYear());
+        ZoneId zoneId = ZoneId.systemDefault();
+        Date date = Date.from(now.atStartOfDay(zoneId).toInstant());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, -1);
+        String firstDay = now.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 2015-01-01
+        String lastDay = now.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+
         Log.d(TAG, "onCreate: "+firstDay);
         Log.d(TAG, "onCreate: "+lastDay);
 //        startDateFixed = Util.fixDateFormatToLexicographicOrder(startDateFixed);
@@ -110,7 +131,6 @@ public class MonthsActivity extends AppCompatActivity {
 //                                        case "other":
 //                                            totalOther += cost;
 //                                            break;
-//
 //                                    }
 //                                }
 //                            }
@@ -128,6 +148,13 @@ public class MonthsActivity extends AppCompatActivity {
 
     }
 
+//    public void fetchData(){
+//        dbRef.child(currentUserUid)
+//                .orderByChild("dateFormatted")
+//                .startAt(firstDay)
+//                .endAt(lastDay)
+//                .addValueEventListener
+//    }
 
     public void updateBarChart(int totalHome, int totalShop, int totalFood, int totalOther) {
         barArraylist = new ArrayList<>();
