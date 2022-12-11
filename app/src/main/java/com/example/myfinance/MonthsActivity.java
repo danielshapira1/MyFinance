@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
@@ -70,19 +71,16 @@ public class MonthsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        LocalDate now = LocalDate.now();
-        ZoneId zoneId = ZoneId.systemDefault();
-        Date date = Date.from(now.atStartOfDay(zoneId).toInstant());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.MONTH, -1);
-        String firstDay = now.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 2015-01-01
-        String lastDay = now.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-
+        LocalDate dateOne = LocalDate.now();
+        String firstDay = dateOne.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")); // 2015-01-01
+        String lastDay = dateOne.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate dateTwo = dateOne.minusMonths(1);
+        String firstDayMonthAgo = dateTwo.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String lastDayMonthAgo = dateTwo.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         Log.d(TAG, "onCreate: "+firstDay);
         Log.d(TAG, "onCreate: "+lastDay);
-//        startDateFixed = Util.fixDateFormatToLexicographicOrder(startDateFixed);
-//        endDateFixed = Util.fixDateFormatToLexicographicOrder(endDateFixed);
+        String startDateFixed = Util.fixDateFormatToLexicographicOrder(firstDay);
+        String endDateFixed = Util.fixDateFormatToLexicographicOrder(lastDay);
 
 //        dbRef.child(currentUserUid)
 //                .orderByChild("dateFormatted")
