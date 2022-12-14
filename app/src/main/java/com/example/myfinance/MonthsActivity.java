@@ -38,9 +38,12 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class MonthsActivity extends AppCompatActivity {
-    private static enum DisplayData{
+    private static enum DisplayData {
         FOOD,
         HOME,
         SHOPPING,
@@ -48,11 +51,14 @@ public class MonthsActivity extends AppCompatActivity {
         ALL,
         SUM
     }
+
     ArrayList barArraylist;
     DatabaseReference dbRef;
     FirebaseAuth auth;
     String currentUserUid;
     DisplayData displayData;
+    String startDateFixed;
+    String endDateFixed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +83,15 @@ public class MonthsActivity extends AppCompatActivity {
         LocalDate dateTwo = dateOne.minusMonths(1);
         String firstDayMonthAgo = dateTwo.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String lastDayMonthAgo = dateTwo.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        Log.d(TAG, "onCreate: "+firstDay);
-        Log.d(TAG, "onCreate: "+lastDay);
-        String startDateFixed = Util.fixDateFormatToLexicographicOrder(firstDay);
-        String endDateFixed = Util.fixDateFormatToLexicographicOrder(lastDay);
+        Log.d(TAG, "onCreate: " + firstDay);
+        Log.d(TAG, "onCreate: " + lastDay);
+        startDateFixed = Util.fixDateFormatToLexicographicOrder(firstDay);
+        endDateFixed = Util.fixDateFormatToLexicographicOrder(lastDay);
 
 //        dbRef.child(currentUserUid)
 //                .orderByChild("dateFormatted")
-//                .startAt(firstDay)
-//                .endAt(lastDay)
+//                .startAt(startDateFixed)
+//                .endAt(endDateFixed)
 //                .addValueEventListener(new ValueEventListener() {
 //                    @Override
 //                    public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -178,5 +184,45 @@ public class MonthsActivity extends AppCompatActivity {
     // This function is for readable purpose to prevent DRY code
     private int gColor(int color) {
         return ContextCompat.getColor(this, color);
+    }
+
+    private void getPayment(Map<Integer, List<Payment>> paymentsMap) {
+        LocalDate now = LocalDate.now();
+        for (int i = 0; i < 6; i++) {
+            paymentsMap.put(now.getMonth().getValue(), new ArrayList<>());
+            now = now.minusMonths(1);
+        }
+        dbRef.child(currentUserUid)
+                .orderByChild("dateFormatted")
+                .startAt(startDateFixed)
+                .endAt(endDateFixed)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        paymentsMap.forEach((m, payments) -> payments.clear());
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Payment payment = dataSnapshot.getValue(Payment.class);
+                            if (payment == null) {
+                                return;
+                            }
+                            payment.setId(dataSnapshot.getKey());
+                            int paymentMonth = 0;
+                            // לבדוק את החודש של ההוצאה ולהוסיף אותה לרשימה המתאימה
+                            Objects.requireNonNull(paymentsMap.get(paymentMonth)).add(payment);
+                            String currentCategory =
+                                    dataSnapshot.child("category").getValue() != null ?
+                                            dataSnapshot.child("category").getValue().toString() :
+                                            "";
+
+                            String costStr = dataSnapshot.child("cost").getValue().toString();
+                            int cost = Integer.parseInt(costStr);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

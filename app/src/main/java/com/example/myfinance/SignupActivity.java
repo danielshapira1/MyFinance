@@ -91,17 +91,10 @@ public class SignupActivity extends AppCompatActivity {
             public void onSuccess(AuthResult authResult) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 String email = firebaseUser.getEmail();
-                Toast.makeText(SignupActivity.this, "account created/n"+email ,Toast.LENGTH_SHORT).show();
-                Button button = findViewById(R.id.signupBtn);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(SignupActivity.this,MainScreen.class);
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
+                Toast.makeText(SignupActivity.this, "account created\n"+email ,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SignupActivity.this,MainScreen.class);
+                startActivity(intent);
+                finish();
             }
         })
                 .addOnFailureListener(new OnFailureListener() {

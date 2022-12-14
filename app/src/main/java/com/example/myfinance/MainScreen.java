@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -49,10 +52,10 @@ public class MainScreen extends AppCompatActivity {
     TextView textMaxTV;
     private TextView startDateTV;
     private TextView endDateTV;
-    int totalHome = 0;
-    int totalShop = 0;
-    int totalFood = 0;
-    int totalOther = 0;
+    int totalHome;
+    int totalShop;
+    int totalFood;
+    int totalOther;
 
 
     @Override
@@ -278,5 +281,30 @@ public class MainScreen extends AppCompatActivity {
     // This function is for readable purpose to prevent DRY code
     private int gColor(int color){
         return ContextCompat.getColor(this, color);
+    }
+
+    public void onBackPressed(){
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                Intent a = new Intent(Intent.ACTION_MAIN);
+                a.addCategory(Intent.CATEGORY_HOME);
+                a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(a);
+            }
+            else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                dialog.cancel();
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Exit app");
+        builder.setMessage("Are you sure you what to exit?").
+                setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener);
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
     }
 }
