@@ -254,18 +254,14 @@ public class MonthsActivity extends AppCompatActivity {
         maxMonthView.setText("The month with the most spending: " + maxMonthName + "\n" +
                 "Which amounts to: " + maxMonth);
         maxCategory = Math.max(Math.max(countFood, countHome), Math.max(countShopping, countOther));
-        if (countFood > countHome && countFood > countShopping && countFood > countOther) {
+        if (countFood > countHome && countFood > countShopping && countFood > countOther)
             maxCategoryName = "Food";
-        }
-        else if (countHome > countShopping && countHome > countOther){
+        else if (countHome > countShopping && countHome > countOther)
             maxCategoryName = "Home";
-        }
-        else if (countShopping > countOther){
+        else if (countShopping > countOther)
             maxCategoryName = "Shopping";
-        }
-        else{
+        else
             maxCategoryName = "Other";
-        }
         TextView maxCategoryView = findViewById(R.id.maxCategory);
         maxCategoryView.setText("Most spent category: " + maxCategoryName + "\n" +
                 "Which amounts to: " + maxCategory);
