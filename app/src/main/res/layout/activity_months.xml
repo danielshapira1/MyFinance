@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="Last 6 Months Spendings"
+        android:text="Summary of the last 6 months"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chartOfMonths"
@@ -42,5 +42,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.413" />
+
+    <TextView
+        android:id="@+id/sumTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/chartOfMonths"
+        app:layout_constraintTop_toBottomOf="@+id/chartOfMonths" />
+
+    <TextView
+        android:id="@+id/maxMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/sumTotal"
+        app:layout_constraintTop_toBottomOf="@+id/sumTotal" />
+
+    <TextView
+        android:id="@+id/maxCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/maxMonth"
+        app:layout_constraintTop_toBottomOf="@+id/maxMonth" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

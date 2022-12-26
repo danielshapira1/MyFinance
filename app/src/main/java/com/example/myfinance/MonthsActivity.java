@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
@@ -44,6 +45,17 @@ public class MonthsActivity extends AppCompatActivity {
         ALL,
         SUM
     }
+
+    int sumTotal;
+    int maxMonth;
+    String maxMonthName;
+    int currentMonth;
+    int maxCategory;
+    String maxCategoryName;
+    int countFood;
+    int countHome;
+    int countShopping;
+    int countOther;
 
     DatabaseReference dbRef;
     FirebaseAuth auth;
@@ -159,7 +171,7 @@ public class MonthsActivity extends AppCompatActivity {
 
             BarData data = new BarData(dataSets);
 //            data.setValueFormatter(new MyValueFormatter());
-            data.setValueTextColor(Color.WHITE);
+//            data.setValueTextColor(Color.BLACK);
 
             mChart1.setData(data);
         }
@@ -171,12 +183,20 @@ public class MonthsActivity extends AppCompatActivity {
     private int gColor(int color) { return ContextCompat.getColor(this, color); }
 
     private void getPayment(Map<Integer, List<Payment>> paymentsMap) {
+        sumTotal = 0;
+        maxMonth = 0;
+        maxCategory = 0;
+        countFood = 0;
+        countHome = 0;
+        countShopping = 0;
+        countOther = 0;
         LocalDate now = LocalDate.now();
         for (int i = 0; i < 6; i++) {
             String firstDay = now.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 2015-01-01
             String lastDay = now.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
             ArrayList<Payment> payments = new ArrayList<>();
             paymentsMap.put(now.getMonth().getValue(), payments);
+            LocalDate finalNow = now;
             dbRef.child(currentUserUid)
                     .orderByChild("dateFormatted")
                     .startAt(firstDay)
@@ -184,6 +204,7 @@ public class MonthsActivity extends AppCompatActivity {
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            currentMonth = 0;
                             payments.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 Payment payment = dataSnapshot.getValue(Payment.class);
@@ -191,6 +212,28 @@ public class MonthsActivity extends AppCompatActivity {
                                     return;
                                 }
                                 payment.setId(dataSnapshot.getKey());
+                                sumTotal += Integer.parseInt(payment.getCost());
+                                currentMonth += Integer.parseInt(payment.getCost());
+                                if (maxMonth < currentMonth){
+                                    maxMonth = currentMonth;
+                                    maxMonthName = finalNow.getMonth().toString();
+                                    maxMonthName = maxMonthName.charAt(0) +
+                                            maxMonthName.substring(1).toLowerCase();
+                                }
+                                switch (payment.getCategory()) {
+                                    case "food":
+                                        countFood += Integer.parseInt(payment.getCost());
+                                        break;
+                                    case "home":
+                                        countHome += Integer.parseInt(payment.getCost());
+                                        break;
+                                    case "shopping":
+                                        countShopping += Integer.parseInt(payment.getCost());
+                                        break;
+                                    case "other":
+                                        countOther += Integer.parseInt(payment.getCost());
+                                        break;
+                                }
                                 payments.add(payment);
                             }
                             updateBarChart();
@@ -205,6 +248,26 @@ public class MonthsActivity extends AppCompatActivity {
     }
 
     public void updateStats(){
-
+        TextView sumTotalView = findViewById(R.id.sumTotal);
+        sumTotalView.setText("Total spending of 6 last months: " + sumTotal);
+        TextView maxMonthView = findViewById(R.id.maxMonth);
+        maxMonthView.setText("The month with the most spending: " + maxMonthName + "\n" +
+                "Which amounts to: " + maxMonth);
+        maxCategory = Math.max(Math.max(countFood, countHome), Math.max(countShopping, countOther));
+        if (countFood > countHome && countFood > countShopping && countFood > countOther) {
+            maxCategoryName = "Food";
+        }
+        else if (countHome > countShopping && countHome > countOther){
+            maxCategoryName = "Home";
+        }
+        else if (countShopping > countOther){
+            maxCategoryName = "Shopping";
+        }
+        else{
+            maxCategoryName = "Other";
+        }
+        TextView maxCategoryView = findViewById(R.id.maxCategory);
+        maxCategoryView.setText("Most spent category: " + maxCategoryName + "\n" +
+                "Which amounts to: " + maxCategory);
     }
 }
