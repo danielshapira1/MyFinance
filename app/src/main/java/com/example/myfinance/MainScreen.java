@@ -265,14 +265,15 @@ public class MainScreen extends AppCompatActivity {
         barArraylist.add(new BarEntry(3, totalShop));
         barArraylist.add(new BarEntry(4, totalOther));
         BarChart barChart = findViewById(R.id.chart);
-        BarDataSet barDataSet = new BarDataSet(barArraylist, "My spending's");
-        BarData barData = new BarData(barDataSet);
-        barChart.setData(barData);
+        BarDataSet barDataSet = new BarDataSet(barArraylist, "");
         barDataSet.setColors(gColor(R.color.yellow),
                 gColor(R.color.DeepSkyBlue),
                 gColor(R.color.Violet),
                 gColor(R.color.PaleGreen));
         barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setStackLabels(new String[]{"Food", "Home", "Shopping","Other"});
+        BarData barData = new BarData(barDataSet);
+        barChart.setData(barData);
         barChart.getDescription().setEnabled(false);
         XAxis xAxisRight = barChart.getXAxis();
         xAxisRight.setEnabled(false);

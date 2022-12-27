@@ -118,7 +118,6 @@ public class MonthsActivity extends AppCompatActivity {
 
         Legend l = mChart1.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
         l.setFormSize(8f);
@@ -249,10 +248,9 @@ public class MonthsActivity extends AppCompatActivity {
 
     public void updateStats(){
         TextView sumTotalView = findViewById(R.id.sumTotal);
-        sumTotalView.setText("* Total spending of 6 last months: " + sumTotal);
+        sumTotalView.setText("" + sumTotal);
         TextView maxMonthView = findViewById(R.id.maxMonth);
-        maxMonthView.setText("* The month with the most spending: " + maxMonthName + "\n" +
-                "Which amounts to: " + maxMonth);
+        maxMonthView.setText("" + maxMonthName + "\n" + maxMonth);
         maxCategory = Math.max(Math.max(countFood, countHome), Math.max(countShopping, countOther));
         if (countFood > countHome && countFood > countShopping && countFood > countOther)
             maxCategoryName = "Food";
@@ -263,7 +261,6 @@ public class MonthsActivity extends AppCompatActivity {
         else
             maxCategoryName = "Other";
         TextView maxCategoryView = findViewById(R.id.maxCategory);
-        maxCategoryView.setText("* Most spent category: " + maxCategoryName + "\n" +
-                "Which amounts to: " + maxCategory);
+        maxCategoryView.setText("" + maxCategoryName + "\n" + maxCategory);
     }
 }
