@@ -33,6 +33,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chartOfMonths"
         android:layout_width="327dp"
@@ -41,36 +42,65 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.413" />
+        app:layout_constraintVertical_bias="0.29" />
 
-    <TextView
-        android:id="@+id/sumTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
-        android:text="TextView"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/chartOfMonths"
-        app:layout_constraintTop_toBottomOf="@+id/chartOfMonths" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="408dp"
+        android:layout_height="277dp"
+        android:layout_marginTop="1dp"
+        android:background="#97a199"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chartOfMonths"
+        app:layout_constraintVertical_bias="1.0">
 
-    <TextView
-        android:id="@+id/maxMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="TextView"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/sumTotal"
-        app:layout_constraintTop_toBottomOf="@+id/sumTotal" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:text="summary"
+            android:background="@color/white"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/sumTotal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/maxCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/maxMonth"
-        app:layout_constraintTop_toBottomOf="@+id/maxMonth" />
+        <TextView
+            android:id="@+id/sumTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="76dp"
+            android:text="TextView"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/maxMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="TextView"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/sumTotal"
+            app:layout_constraintTop_toBottomOf="@+id/sumTotal" />
+
+        <TextView
+            android:id="@+id/maxCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="@+id/maxMonth"
+            app:layout_constraintTop_toBottomOf="@+id/maxMonth" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
