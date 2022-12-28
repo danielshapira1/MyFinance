@@ -76,22 +76,12 @@
             android:id="@+id/sumTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="76dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="72dp"
             android:text="TextView"
             android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/sumTotalIntor"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/sumTotalIntor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:text="* Total spending of 6 last months: "
             app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/maxMonth"
@@ -100,19 +90,8 @@
             android:layout_marginTop="32dp"
             android:text="TextView"
             android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/maxMonthIntro"
+            app:layout_constraintStart_toStartOf="@+id/sumTotal"
             app:layout_constraintTop_toBottomOf="@+id/sumTotal" />
-
-        <TextView
-            android:id="@+id/maxMonthIntro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:text="* The month with the most spending: \n                                  *Which amounts to: "
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/sumTotalIntor" />
 
         <TextView
             android:id="@+id/maxCategory"
@@ -120,18 +99,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="TextView"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/maxCategoryIntro"
-            app:layout_constraintTop_toBottomOf="@+id/maxMonthIntro" />
-
-        <TextView
-            android:id="@+id/maxCategoryIntro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="* Most spent category: \n      *Which amounts to: "
-            app:layout_constraintStart_toStartOf="@+id/maxMonthIntro"
-            app:layout_constraintTop_toBottomOf="@+id/maxMonthIntro" />
+            app:layout_constraintStart_toStartOf="@+id/maxMonth"
+            app:layout_constraintTop_toBottomOf="@+id/maxMonth" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
