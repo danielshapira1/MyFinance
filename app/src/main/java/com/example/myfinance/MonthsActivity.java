@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;
 
@@ -48,10 +48,10 @@ public class MonthsActivity extends AppCompatActivity {
     }
 
     int sumTotal;
-    int maxMonth;
+    int maxMonthValue;
     String maxMonthName;
     int currentMonth;
-    int maxCategory;
+    int maxCategoryValue;
     String maxCategoryName;
     int countFood;
     int countHome;
@@ -184,8 +184,8 @@ public class MonthsActivity extends AppCompatActivity {
 
     private void getPayment(Map<Integer, List<Payment>> paymentsMap) {
         sumTotal = 0;
-        maxMonth = 0;
-        maxCategory = 0;
+        maxMonthValue = 0;
+        maxCategoryValue = 0;
         countFood = 0;
         countHome = 0;
         countShopping = 0;
@@ -214,8 +214,8 @@ public class MonthsActivity extends AppCompatActivity {
                                 payment.setId(dataSnapshot.getKey());
                                 sumTotal += Integer.parseInt(payment.getCost());
                                 currentMonth += Integer.parseInt(payment.getCost());
-                                if (maxMonth < currentMonth){
-                                    maxMonth = currentMonth;
+                                if (maxMonthValue < currentMonth){
+                                    maxMonthValue = currentMonth;
                                     maxMonthName = finalNow.getMonth().toString();
                                     maxMonthName = maxMonthName.charAt(0) +
                                             maxMonthName.substring(1).toLowerCase();
@@ -249,27 +249,27 @@ public class MonthsActivity extends AppCompatActivity {
 
     public void updateStats(){
         TextView sumTotalView = findViewById(R.id.sumTotal);
-        sumTotalView.setText(HtmlCompat.fromHtml("* Total spending of 6 last months: <b>" +
-                sumTotal + "</b>",
-                HtmlCompat.FROM_HTML_MODE_LEGACY));
+        sumTotalView.setText(htmlFormat("* Total spending of 6 last months: <b>" +
+                sumTotal + "</b>"));
         TextView maxMonthView = findViewById(R.id.maxMonth);
-        maxMonthView.setText(HtmlCompat.fromHtml("* The month with the most spending: <b>" +
-                maxMonthName + "</b>" +
-                "<br>Which amounts to: <b>" + maxMonth + "</b>",
-                HtmlCompat.FROM_HTML_MODE_LEGACY));
-        maxCategory = Math.max(Math.max(countFood, countHome), Math.max(countShopping, countOther));
-        if (countFood > countHome && countFood > countShopping && countFood > countOther)
+        maxMonthView.setText(htmlFormat("* The month with the most spending: <b>" +
+                maxMonthName + "</b><br>Which amounts to: <b>" + maxMonthValue + "</b>"));
+        maxCategoryValue = Math.max(Math.max(countFood, countHome),
+                Math.max(countShopping, countOther));
+        if (countFood > Math.max(countHome, Math.max(countShopping, countOther)))
             maxCategoryName = "Food";
-        else if (countHome > countShopping && countHome > countOther)
+        else if (countHome > Math.max(countShopping, countOther))
             maxCategoryName = "Home";
         else if (countShopping > countOther)
             maxCategoryName = "Shopping";
         else
             maxCategoryName = "Other";
         TextView maxCategoryView = findViewById(R.id.maxCategory);
-        maxCategoryView.setText(HtmlCompat.fromHtml("* Most spent category: <b>" +
-                maxCategoryName + "</b>" +
-                "<br>Which amounts to: <b>" + maxCategory + "</b>",
-                HtmlCompat.FROM_HTML_MODE_LEGACY));
+        maxCategoryView.setText(htmlFormat("* Most spent category: <b>" + maxCategoryName
+                + "</b><br>Which amounts to: <b>" + maxCategoryValue + "</b>"));
+    }
+
+    private Spanned htmlFormat(String s){
+        return HtmlCompat.fromHtml(s, HtmlCompat.FROM_HTML_MODE_LEGACY);
     }
 }
