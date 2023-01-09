@@ -5,23 +5,24 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +30,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,14 +38,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MonthsActivity extends AppCompatActivity {
-    private static enum DisplayData {
-        FOOD,
-        HOME,
-        SHOPPING,
-        OTHER,
-        ALL,
-        SUM
-    }
 
     int sumTotal;
     int maxMonthValue;
@@ -57,6 +49,7 @@ public class MonthsActivity extends AppCompatActivity {
     int countHome;
     int countShopping;
     int countOther;
+    String[] months;
 
     DatabaseReference dbRef;
     FirebaseAuth auth;
@@ -113,7 +106,12 @@ public class MonthsActivity extends AppCompatActivity {
         mChart1.getAxisRight().setEnabled(false);
 
         XAxis xLabels = mChart1.getXAxis();
+//        xLabels.setGranularity(1f);
+//        xLabels.setGranularityEnabled(true);
+//        xLabels.setCenterAxisLabels(true);
+//        xLabels.setDrawGridLines(true);
         xLabels.setPosition(XAxis.XAxisPosition.TOP);
+        xLabels.setValueFormatter(new IndexAxisValueFormatter(months));
 
         // setting data;
 
@@ -150,8 +148,7 @@ public class MonthsActivity extends AppCompatActivity {
 
         BarDataSet set1;
 
-        if (mChart1.getData() != null &&
-                mChart1.getData().getDataSetCount() > 0) {
+        if (mChart1.getData() != null && mChart1.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) mChart1.getData().getDataSetByIndex(0);
             set1.setValues(yVals1);
             mChart1.getData().notifyDataChanged();
@@ -159,13 +156,9 @@ public class MonthsActivity extends AppCompatActivity {
         } else {
             set1 = new BarDataSet(yVals1,"");
             set1.setDrawIcons(false);
-            set1.setColors(gColor(R.color.yellow),
-                    gColor(R.color.DeepSkyBlue),
-                    gColor(R.color.Violet),
-                    gColor(R.color.PaleGreen));
+            set1.setColors(Util.getColors(this));
 
             set1.setStackLabels(new String[]{"Food", "Home", "Shopping","Other"});
-
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
 
@@ -175,12 +168,10 @@ public class MonthsActivity extends AppCompatActivity {
 
             mChart1.setData(data);
         }
-
         mChart1.setFitBars(true);
         mChart1.invalidate();
     }
 
-    private int gColor(int color) { return ContextCompat.getColor(this, color); }
 
     private void getPayment(Map<Integer, List<Payment>> paymentsMap) {
         sumTotal = 0;
@@ -190,12 +181,15 @@ public class MonthsActivity extends AppCompatActivity {
         countHome = 0;
         countShopping = 0;
         countOther = 0;
+        months = new String[6];
         LocalDate now = LocalDate.now();
         for (int i = 0; i < 6; i++) {
             String firstDay = now.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 2015-01-01
             String lastDay = now.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
             ArrayList<Payment> payments = new ArrayList<>();
-            paymentsMap.put(now.getMonth().getValue(), payments);
+            int yearAndMonth = (now.getYear() * 12) + (now.getMonth().getValue());
+            months[i] = ""+now.getMonth().getValue();
+            paymentsMap.put(yearAndMonth, payments);
             LocalDate finalNow = now;
             dbRef.child(currentUserUid)
                     .orderByChild("dateFormatted")

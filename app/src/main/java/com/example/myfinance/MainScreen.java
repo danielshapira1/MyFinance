@@ -266,10 +266,7 @@ public class MainScreen extends AppCompatActivity {
         barArraylist.add(new BarEntry(4, totalOther));
         BarChart barChart = findViewById(R.id.chart);
         BarDataSet barDataSet = new BarDataSet(barArraylist, "");
-        barDataSet.setColors(gColor(R.color.yellow),
-                gColor(R.color.DeepSkyBlue),
-                gColor(R.color.Violet),
-                gColor(R.color.PaleGreen));
+        barDataSet.setColors(Util.getColors(this));
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setStackLabels(new String[]{"Food", "Home", "Shopping","Other"});
         BarData barData = new BarData(barDataSet);
@@ -278,10 +275,6 @@ public class MainScreen extends AppCompatActivity {
         XAxis xAxisRight = barChart.getXAxis();
         xAxisRight.setEnabled(false);
         barChart.invalidate();
-    }
-    // This function is for readable purpose to prevent DRY code
-    private int gColor(int color){
-        return ContextCompat.getColor(this, color);
     }
 
     public void onBackPressed(){

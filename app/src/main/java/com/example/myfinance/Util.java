@@ -1,5 +1,9 @@
 package com.example.myfinance;
 
+import android.content.Context;
+
+import androidx.core.content.ContextCompat;
+
 public class Util {
 
     // Fixes format: d/MM/yyyy -> 0d/MM/yyyy  or   dd/M/yyyy -> dd/0M/yyyy
@@ -40,6 +44,13 @@ public class Util {
         result = year + "/" + month + "/" + day;
 
         return result;
+    }
+
+    public static int[] getColors(Context context){
+        return new int[]{ContextCompat.getColor(context, R.color.yellow),
+                ContextCompat.getColor(context, R.color.DeepSkyBlue),
+                ContextCompat.getColor(context, R.color.Violet),
+                ContextCompat.getColor(context, R.color.PaleGreen)};
     }
 
 
