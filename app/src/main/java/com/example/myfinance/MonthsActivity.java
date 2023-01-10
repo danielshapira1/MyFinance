@@ -5,10 +5,8 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;
 import com.example.myfinance.models.Payment;
@@ -170,6 +168,7 @@ public class MonthsActivity extends AppCompatActivity {
         }
         mChart1.setFitBars(true);
         mChart1.invalidate();
+        mChart1.animateY(1500);
     }
 
 
@@ -187,7 +186,7 @@ public class MonthsActivity extends AppCompatActivity {
             String firstDay = now.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 2015-01-01
             String lastDay = now.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
             ArrayList<Payment> payments = new ArrayList<>();
-            int yearAndMonth = (now.getYear() * 12) + (now.getMonth().getValue());
+            int yearAndMonth = (now.getYear() * 12) + (now.getMonthValue());
             months[i] = ""+now.getMonth().getValue();
             paymentsMap.put(yearAndMonth, payments);
             LocalDate finalNow = now;
@@ -243,10 +242,10 @@ public class MonthsActivity extends AppCompatActivity {
 
     public void updateStats(){
         TextView sumTotalView = findViewById(R.id.sumTotal);
-        sumTotalView.setText(htmlFormat("* Total spending of 6 last months: <b>" +
+        sumTotalView.setText(Util.htmlFormat("* Total spending of 6 last months: <b>" +
                 sumTotal + "</b>"));
         TextView maxMonthView = findViewById(R.id.maxMonth);
-        maxMonthView.setText(htmlFormat("* The month with the most spending: <b>" +
+        maxMonthView.setText(Util.htmlFormat("* The month with the most spending: <b>" +
                 maxMonthName + "</b><br>Which amounts to: <b>" + maxMonthValue + "</b>"));
         maxCategoryValue = Math.max(Math.max(countFood, countHome),
                 Math.max(countShopping, countOther));
@@ -259,11 +258,8 @@ public class MonthsActivity extends AppCompatActivity {
         else
             maxCategoryName = "Other";
         TextView maxCategoryView = findViewById(R.id.maxCategory);
-        maxCategoryView.setText(htmlFormat("* Most spent category: <b>" + maxCategoryName
+        maxCategoryView.setText(Util.htmlFormat("* Most spent category: <b>" + maxCategoryName
                 + "</b><br>Which amounts to: <b>" + maxCategoryValue + "</b>"));
     }
 
-    private Spanned htmlFormat(String s){
-        return HtmlCompat.fromHtml(s, HtmlCompat.FROM_HTML_MODE_LEGACY);
-    }
 }

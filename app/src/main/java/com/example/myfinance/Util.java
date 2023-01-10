@@ -1,8 +1,9 @@
 package com.example.myfinance;
 
 import android.content.Context;
-
+import android.text.Spanned;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 public class Util {
 
@@ -53,5 +54,8 @@ public class Util {
                 ContextCompat.getColor(context, R.color.PaleGreen)};
     }
 
+    public static Spanned htmlFormat(String html){
+        return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY);
+    }
 
 }

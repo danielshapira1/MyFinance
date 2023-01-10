@@ -275,6 +275,7 @@ public class MainScreen extends AppCompatActivity {
         XAxis xAxisRight = barChart.getXAxis();
         xAxisRight.setEnabled(false);
         barChart.invalidate();
+        barChart.animateY(750);
     }
 
     public void onBackPressed(){
