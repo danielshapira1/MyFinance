@@ -40,9 +40,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
         return new PaymentViewholder(view);
     }
 
-
-
-
     @Override
     public void onBindViewHolder(@NonNull PaymentViewholder holder, int position) {
         Payment payment = list.get(position);
