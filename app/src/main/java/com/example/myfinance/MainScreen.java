@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -33,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainScreen extends AppCompatActivity {
-    ArrayList barArraylist;
+    ArrayList<BarEntry> barArraylist;
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
     final static String TAG = "My finance";
@@ -66,7 +64,7 @@ public class MainScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("payments").child("newPayment");
         currentUserUid = auth.getCurrentUser().getUid().toString();
-        View moveToPaymentScreen =  findViewById(R.id.createNewPayment);
+        View moveToPaymentScreen = findViewById(R.id.createNewPayment);
         View moveToMonthsScreen = findViewById(R.id.months);
         View moveToFilterScreen = findViewById(R.id.filters);
         LocalDate firstOfMonth = LocalDate.now().withDayOfMonth(1);
@@ -259,32 +257,38 @@ public class MainScreen extends AppCompatActivity {
     }
 
     public void updateBarChart(int totalHome, int totalShop, int totalFood, int totalOther) {
+        BarChart barChart = findViewById(R.id.chart);
+        barChart.getDescription().setEnabled(false);
+
         barArraylist = new ArrayList<>();
         barArraylist.add(new BarEntry(1, totalFood));
         barArraylist.add(new BarEntry(2, totalHome));
         barArraylist.add(new BarEntry(3, totalShop));
         barArraylist.add(new BarEntry(4, totalOther));
-        BarChart barChart = findViewById(R.id.chart);
+
         BarDataSet barDataSet = new BarDataSet(barArraylist, "");
+//        barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setColors(Util.getColors(this));
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setStackLabels(new String[]{"Food", "Home", "Shopping","Other"});
-        BarData barData = new BarData(barDataSet);
-        barChart.setData(barData);
-        barChart.getDescription().setEnabled(false);
-        XAxis xAxisRight = barChart.getXAxis();
-        xAxisRight.setEnabled(false);
+        barDataSet.setStackLabels(new String[]{"Food", "Home", "Shopping", "Other"});
+        BarData data = new BarData(barDataSet);
+//            data.setValueFormatter(new MyValueFormatter());
+//            data.setValueTextColor(Color.BLACK);
+        barChart.setData(data);
+        barChart.getXAxis().setEnabled(false);
+        barChart.getAxisLeft().setAxisMinimum(0);
+        barChart.getAxisRight().setEnabled(false);
+        barChart.setDrawValueAboveBar(true);
+        barChart.getData().setValueTextSize(15);
         barChart.invalidate();
-        barChart.animateY(750);
+        barChart.animateY(600);
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 finishAffinity();
                 System.exit(0);
-            }
-            else if (which == DialogInterface.BUTTON_NEGATIVE) {
+            } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                 dialog.cancel();
             }
         };

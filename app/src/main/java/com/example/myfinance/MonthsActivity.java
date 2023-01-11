@@ -11,15 +11,12 @@ import android.view.View;
 import android.widget.TextView;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +44,6 @@ public class MonthsActivity extends AppCompatActivity {
     int countHome;
     int countShopping;
     int countOther;
-    String[] months;
 
     DatabaseReference dbRef;
     FirebaseAuth auth;
@@ -104,12 +100,16 @@ public class MonthsActivity extends AppCompatActivity {
         mChart1.getAxisRight().setEnabled(false);
 
         XAxis xLabels = mChart1.getXAxis();
-//        xLabels.setGranularity(1f);
-//        xLabels.setGranularityEnabled(true);
-//        xLabels.setCenterAxisLabels(true);
-//        xLabels.setDrawGridLines(true);
         xLabels.setPosition(XAxis.XAxisPosition.TOP);
-        xLabels.setValueFormatter(new IndexAxisValueFormatter(months));
+        xLabels.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int month = (int)value % 12;
+                if (month == 0)
+                    month = 12;
+                return ""+month;
+            }
+        });
 
         // setting data;
 
@@ -155,7 +155,6 @@ public class MonthsActivity extends AppCompatActivity {
             set1 = new BarDataSet(yVals1,"");
             set1.setDrawIcons(false);
             set1.setColors(Util.getColors(this));
-
             set1.setStackLabels(new String[]{"Food", "Home", "Shopping","Other"});
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
@@ -168,7 +167,7 @@ public class MonthsActivity extends AppCompatActivity {
         }
         mChart1.setFitBars(true);
         mChart1.invalidate();
-        mChart1.animateY(1500);
+        mChart1.animateY(1200);
     }
 
 
@@ -180,14 +179,12 @@ public class MonthsActivity extends AppCompatActivity {
         countHome = 0;
         countShopping = 0;
         countOther = 0;
-        months = new String[6];
         LocalDate now = LocalDate.now();
         for (int i = 0; i < 6; i++) {
             String firstDay = now.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 2015-01-01
             String lastDay = now.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
             ArrayList<Payment> payments = new ArrayList<>();
             int yearAndMonth = (now.getYear() * 12) + (now.getMonthValue());
-            months[i] = ""+now.getMonth().getValue();
             paymentsMap.put(yearAndMonth, payments);
             LocalDate finalNow = now;
             dbRef.child(currentUserUid)
