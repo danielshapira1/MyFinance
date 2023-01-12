@@ -111,10 +111,10 @@
         android:text="end date:"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startDate"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/startDateTV"
+        app:layout_constraintTop_toBottomOf="@+id/startDateTV"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/startDate"
@@ -123,32 +123,36 @@
         android:text="start date:"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filters" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/filters"
+        app:layout_constraintTop_toBottomOf="@+id/filters"
+        app:layout_constraintVertical_bias="0.15" />
 
     <TextView
         android:id="@+id/endDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startDateTV"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/endDate"
+        app:layout_constraintTop_toBottomOf="@+id/endDate"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/startDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filters" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/startDate"
+        app:layout_constraintTop_toBottomOf="@+id/startDate"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/categoryView"
@@ -157,9 +161,10 @@
         android:text="category:"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/months"
-        app:layout_constraintVertical_bias="0.509" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/months"
+        app:layout_constraintTop_toTopOf="@+id/startDate"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/selectedCategory"
@@ -168,8 +173,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/categoryView"
+        app:layout_constraintTop_toTopOf="@+id/endDate"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/minView"
@@ -179,41 +186,44 @@
         android:text="min:"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.682"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createNewPayment"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/createNewPayment"
+        app:layout_constraintTop_toTopOf="@+id/categoryView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/maxView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="max:"
-        app:layout_constraintBottom_toTopOf="@+id/chart"
+        app:layout_constraintBottom_toBottomOf="@+id/endDate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.679"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/createNewPayment"
+        app:layout_constraintTop_toTopOf="@+id/endDate" />
 
     <TextView
         android:id="@+id/minCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/chart"
+        app:layout_constraintBottom_toBottomOf="@+id/minView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.88"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createNewPayment" />
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toEndOf="@+id/minView"
+        app:layout_constraintTop_toTopOf="@+id/minView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/maxCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/chart"
+        app:layout_constraintBottom_toBottomOf="@+id/maxView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.88"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toEndOf="@+id/maxView"
+        app:layout_constraintTop_toTopOf="@+id/maxView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createNewPayment"
@@ -231,12 +241,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/selectedCategory"
+        app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.237"
+        app:layout_constraintTop_toTopOf="@+id/createNewPayment"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_baseline_calendar_month_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
