@@ -132,7 +132,7 @@
         android:id="@+id/endDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +145,7 @@
         android:id="@+id/startDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -175,7 +175,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/categoryView"
-        app:layout_constraintTop_toTopOf="@+id/endDate"
+        app:layout_constraintTop_toBottomOf="@+id/categoryView"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -196,34 +196,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="max:"
-        app:layout_constraintBottom_toBottomOf="@+id/endDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/createNewPayment"
-        app:layout_constraintTop_toTopOf="@+id/endDate" />
+        app:layout_constraintStart_toStartOf="@+id/minView"
+        app:layout_constraintTop_toBottomOf="@+id/minCost" />
 
     <TextView
         android:id="@+id/minCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/minView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
-        app:layout_constraintStart_toEndOf="@+id/minView"
-        app:layout_constraintTop_toTopOf="@+id/minView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="@+id/minView"
+        app:layout_constraintTop_toBottomOf="@+id/minView" />
 
     <TextView
         android:id="@+id/maxCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/maxView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
-        app:layout_constraintStart_toEndOf="@+id/maxView"
-        app:layout_constraintTop_toTopOf="@+id/maxView" />
+        app:layout_constraintStart_toStartOf="@+id/maxView"
+        app:layout_constraintTop_toBottomOf="@+id/maxView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createNewPayment"
