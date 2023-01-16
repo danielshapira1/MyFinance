@@ -46,7 +46,6 @@
         android:id="@+id/startDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:text="start date:"
         android:textSize="13sp"
         android:textStyle="bold"
