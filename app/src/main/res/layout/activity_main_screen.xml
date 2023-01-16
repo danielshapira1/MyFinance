@@ -48,6 +48,7 @@
                 android:maxLines="1"
                 android:padding="15dip"
                 android:text="@string/amount"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -59,6 +60,7 @@
                 android:maxLines="1"
                 android:padding="15dip"
                 android:text="@string/description"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -70,6 +72,7 @@
                 android:maxLines="1"
                 android:padding="15dip"
                 android:text="@string/date"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -81,6 +84,7 @@
                 android:maxLines="1"
                 android:padding="15dip"
                 android:text="@string/category"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -109,6 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="end date:"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -121,6 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="start date:"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -132,6 +138,7 @@
         android:id="@+id/endDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
@@ -145,6 +152,7 @@
         android:id="@+id/startDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
@@ -159,6 +167,7 @@
         android:layout_width="65dp"
         android:layout_height="20dp"
         android:text="category:"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -170,6 +179,7 @@
         android:id="@+id/selectedCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -184,6 +194,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:text="min:"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -196,6 +207,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="max:"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/minView"
         app:layout_constraintTop_toBottomOf="@+id/minCost" />
 
@@ -203,6 +215,7 @@
         android:id="@+id/minCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/minView"
         app:layout_constraintTop_toBottomOf="@+id/minView" />
@@ -211,6 +224,7 @@
         android:id="@+id/maxCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/maxView"
         app:layout_constraintTop_toBottomOf="@+id/maxView" />

@@ -25,6 +25,7 @@
                 android:padding="6dip"
                 android:text=""
                 android:textAlignment="viewEnd"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -36,6 +37,7 @@
                 android:padding="6dip"
                 android:text=""
                 android:textAlignment="viewEnd"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -47,6 +49,7 @@
                 android:padding="6dip"
                 android:text=""
                 android:textAlignment="viewEnd"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -58,6 +61,7 @@
                 android:padding="6dip"
                 android:text=""
                 android:textAlignment="viewEnd"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
