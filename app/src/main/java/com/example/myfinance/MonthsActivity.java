@@ -113,15 +113,6 @@ public class MonthsActivity extends AppCompatActivity {
 
         // setting data;
 
-        Legend l = mChart1.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setFormSize(8f);
-        l.setFormToTextSpace(4f);
-        l.setXEntrySpace(6f);
-
-
         ArrayList<BarEntry> yVals1 = new ArrayList<>();
         for(Map.Entry<Integer,List<Payment>> entry:paymentPerMonthMap.entrySet()){
             float[] arr = new float[4];
@@ -246,11 +237,11 @@ public class MonthsActivity extends AppCompatActivity {
                 maxMonthName + "</b><br>Which amounts to: <b>" + maxMonthValue + "</b>"));
         maxCategoryValue = Math.max(Math.max(countFood, countHome),
                 Math.max(countShopping, countOther));
-        if (countFood > Math.max(countHome, Math.max(countShopping, countOther)))
+        if (maxCategoryValue == countFood)
             maxCategoryName = "Food";
-        else if (countHome > Math.max(countShopping, countOther))
+        else if (maxCategoryValue == countHome)
             maxCategoryName = "Home";
-        else if (countShopping > countOther)
+        else if (maxCategoryValue == countShopping)
             maxCategoryName = "Shopping";
         else
             maxCategoryName = "Other";

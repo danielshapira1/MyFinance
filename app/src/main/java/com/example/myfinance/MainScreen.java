@@ -15,9 +15,12 @@ import android.widget.TextView;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +31,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainScreen extends AppCompatActivity {
@@ -260,11 +266,41 @@ public class MainScreen extends AppCompatActivity {
         BarChart barChart = findViewById(R.id.chart);
         barChart.getDescription().setEnabled(false);
 
+        HashMap<Integer, List<Integer>> paymentTotalMap = new HashMap<>();
+        ArrayList<Integer> paymentListFood = new ArrayList<>();
+        paymentListFood.add(totalFood);
+        paymentTotalMap.put(0, paymentListFood);
+        ArrayList<Integer> paymentListHome = new ArrayList<>();
+        paymentListHome.add(totalHome);
+        paymentTotalMap.put(1, paymentListHome);
+        ArrayList<Integer> paymentListShop = new ArrayList<>();
+        paymentListShop.add(totalShop);
+        paymentTotalMap.put(2, paymentListShop);
+        ArrayList<Integer> paymentListOther = new ArrayList<>();
+        paymentListOther.add(totalOther);
+        paymentTotalMap.put(3, paymentListOther);
+
         barArraylist = new ArrayList<>();
-        barArraylist.add(new BarEntry(1, totalFood));
-        barArraylist.add(new BarEntry(2, totalHome));
-        barArraylist.add(new BarEntry(3, totalShop));
-        barArraylist.add(new BarEntry(4, totalOther));
+        for(Map.Entry<Integer, List<Integer>> entry:paymentTotalMap.entrySet()){
+            float[] arr = new float[4];
+            for (Integer p : entry.getValue()){
+                switch (entry.getKey()) {
+                    case 0:
+                        arr[0]+=p;
+                        break;
+                    case 1:
+                        arr[1]+=p;
+                        break;
+                    case 2:
+                        arr[2]+=p;
+                        break;
+                    case 3:
+                        arr[3]+=p;
+                        break;
+                }
+            }
+            barArraylist.add(new BarEntry(entry.getKey(),arr));
+        }
 
         BarDataSet barDataSet = new BarDataSet(barArraylist, "");
 //        barDataSet.setValueTextColor(Color.BLACK);
@@ -287,7 +323,7 @@ public class MainScreen extends AppCompatActivity {
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 finishAffinity();
-                System.exit(0);
+                finish();
             } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                 dialog.cancel();
             }
