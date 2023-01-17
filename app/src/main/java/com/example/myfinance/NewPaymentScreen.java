@@ -16,14 +16,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.myfinance.databinding.ActivityLoginBinding;
 import com.example.myfinance.databinding.ActivityNewPaymentBinding;
 import com.example.myfinance.models.Payment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

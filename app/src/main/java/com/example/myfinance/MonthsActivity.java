@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;

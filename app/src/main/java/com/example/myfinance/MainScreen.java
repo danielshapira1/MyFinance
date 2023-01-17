@@ -2,7 +2,6 @@ package com.example.myfinance;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,13 +13,9 @@ import android.view.View;
 import android.widget.TextView;
 import com.example.myfinance.models.Payment;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -323,7 +318,7 @@ public class MainScreen extends AppCompatActivity {
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 finishAffinity();
-                finish();
+                System.exit(0);
             } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                 dialog.cancel();
             }
