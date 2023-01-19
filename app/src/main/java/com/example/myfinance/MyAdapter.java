@@ -78,11 +78,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PaymentViewholder>
     private int getBackgroundColor(String category){
         switch (category){
             case "food":
-                return R.color.yellow;
+                return R.color.yellowTest;
             case "home":
-                return R.color.DeepSkyBlue;
+                return R.color.blueTest;
             case "shopping":
-                return R.color.Violet;
+                return R.color.peach;
         }
         return R.color.PaleGreen; // case "other"
     }

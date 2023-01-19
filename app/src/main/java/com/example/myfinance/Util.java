@@ -48,9 +48,9 @@ public class Util {
     }
 
     public static int[] getColors(Context context){
-        return new int[]{ContextCompat.getColor(context, R.color.yellow),
-                ContextCompat.getColor(context, R.color.DeepSkyBlue),
-                ContextCompat.getColor(context, R.color.Violet),
+        return new int[]{ContextCompat.getColor(context, R.color.yellowTest),
+                ContextCompat.getColor(context, R.color.blueTest),
+                ContextCompat.getColor(context, R.color.peach),
                 ContextCompat.getColor(context, R.color.PaleGreen)};
     }
 
