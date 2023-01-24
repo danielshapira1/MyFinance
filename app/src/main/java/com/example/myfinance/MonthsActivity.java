@@ -162,7 +162,6 @@ public class MonthsActivity extends AppCompatActivity {
 
 
     private void getPayment(Map<Integer, List<Payment>> paymentsMap) {
-        sumTotal = 0;
         maxMonthValue = 0;
         maxCategoryValue = 0;
         countFood = 0;
@@ -192,7 +191,6 @@ public class MonthsActivity extends AppCompatActivity {
                                     return;
                                 }
                                 payment.setId(dataSnapshot.getKey());
-                                sumTotal += Integer.parseInt(payment.getCost());
                                 currentMonth += Integer.parseInt(payment.getCost());
                                 if (maxMonthValue < currentMonth){
                                     maxMonthValue = currentMonth;
@@ -228,6 +226,7 @@ public class MonthsActivity extends AppCompatActivity {
     }
 
     public void updateStats(){
+        sumTotal = countFood + countHome + countShopping + countOther;
         TextView sumTotalView = findViewById(R.id.sumTotal);
         sumTotalView.setText(Util.htmlFormat("* Total spending of 6 last months: <b>" +
                 sumTotal + "</b>"));
