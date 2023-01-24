@@ -228,6 +228,10 @@ public class MonthsActivity extends AppCompatActivity {
     public void updateStats(){
         sumTotal = countFood + countHome + countShopping + countOther;
         TextView sumTotalView = findViewById(R.id.sumTotal);
+        if (sumTotal == 0){
+            sumTotalView.setText("No expenses found in the last 6 months");
+            return;
+        }
         sumTotalView.setText(Util.htmlFormat("* Total spending of 6 last months: <b>" +
                 sumTotal + "</b>"));
         TextView maxMonthView = findViewById(R.id.maxMonth);
