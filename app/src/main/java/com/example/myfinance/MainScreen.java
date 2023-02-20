@@ -318,7 +318,7 @@ public class MainScreen extends AppCompatActivity {
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 finishAffinity();
-                System.exit(0);
+                finish();
             } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                 dialog.cancel();
             }
