@@ -170,8 +170,10 @@ public class MonthsActivity extends AppCompatActivity {
         countOther = 0;
         LocalDate now = LocalDate.now();
         for (int i = 0; i < 6; i++) {
-            String firstDay = now.with(firstDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 2015-01-01
-            String lastDay = now.with(lastDayOfMonth()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            String firstDay = now.with(firstDayOfMonth())
+                    .format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            String lastDay = now.with(lastDayOfMonth())
+                    .format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
             ArrayList<Payment> payments = new ArrayList<>();
             int yearAndMonth = (now.getYear() * 12) + (now.getMonthValue());
             paymentsMap.put(yearAndMonth, payments);
@@ -227,16 +229,18 @@ public class MonthsActivity extends AppCompatActivity {
 
     public void updateStats(){
         sumTotal = countFood + countHome + countShopping + countOther;
-        TextView sumTotalView = findViewById(R.id.sumTotal);
         if (sumTotal == 0)
             return;
+        TextView sumTotalView = findViewById(R.id.sumTotal);
         sumTotalView.setText(Util.htmlFormat("* Total spending of 6 last months: <b>" +
                 sumTotal + "</b>"));
         TextView maxMonthView = findViewById(R.id.maxMonth);
         maxMonthView.setText(Util.htmlFormat("* The month with the most spending: <b>" +
                 maxMonthName + "</b><br>Which amounts to: <b>" + maxMonthValue + "</b>"));
-        maxCategoryValue = Math.max(Math.max(countFood, countHome),
-                Math.max(countShopping, countOther));
+        maxCategoryValue = Math.max(
+                Math.max(countFood, countHome),
+                Math.max(countShopping, countOther)
+        );
         if (maxCategoryValue == countFood)
             maxCategoryName = "Food";
         else if (maxCategoryValue == countHome)
