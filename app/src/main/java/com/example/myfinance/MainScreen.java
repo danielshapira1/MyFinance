@@ -56,7 +56,7 @@ public class MainScreen extends AppCompatActivity {
     int totalFood;
     int totalOther;
 
-
+//onCreate:function that load when the page launches
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +104,7 @@ public class MainScreen extends AppCompatActivity {
                 Integer.parseInt(textMinTV.getText().toString().trim()),
                 Integer.parseInt(textMaxTV.getText().toString().trim()));
 
+        //moveToPaymentScreen: wait for event of type click to change screens
         moveToPaymentScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
